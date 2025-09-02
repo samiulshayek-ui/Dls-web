@@ -3,6 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Penalty Shootout</title>
+<style>
+  body { margin: 0; overflow: hidden; font-family: Arial; }
+  #ui { position: absolute; top: 10px; left: 10px; color: white; font-size: 18px; }
+  #scoreDots { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
+  .dot { width: 20px; height: 20px; border-radius: 50%; background: white; }
+</style>
+</head>
+<body>
+
+<div id="ui">Shooter: <span id="shooterName">Shayek</span></div>
+<div id="scoreDots">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+// Scene setup
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb); // sky color
+
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0, 5, 15);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Controls
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enablePan = false;
+controls.maxPolarAngle = Math.PI/2;
+
+// Lighting
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(10,20,10);
+scene.add(light);
+scene.add(new THREE.AmbientLight(0x404040));
+
+// Ground (football field)
+const fieldGeometry = new THREE.PlaneGeometry(20, 30);
+const fieldMaterial = new THREE.MeshPhongMaterial({color:0x228B22});
+const field = new THREE.Mesh(fieldGeometry, fieldMaterial);
+field.rotation.x = -Math.PI/2;
+scene.add(field);
+
+// Goal (simple white box)
+const goalGeometry = new THREE.BoxGeometry(8, 4, 1);
+const goalMaterial = new THREE.MeshPhongMaterial({color:0xffffff});
+const goal = new THREE.Mesh(goalGeometry, goalMaterial);
+goal.position.set(0,2,-13);
+scene.add(goal);
+
+// Ball
+const ballGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+const ballMaterial = new THREE.MeshPhongMaterial({color:0xffffff});
+const ball = new THREE.Mesh(ballGeometry, ballMaterial);
+ball.position.set(0,0.5,10);
+scene.add(ball);
+
+// Shooter & Goalie (simple boxes for now)
+const shooterGeometry = new THREE.BoxGeometry(1,2,1);
+const shooterMaterial = new THREE.MeshPhongMaterial({color:0x0000ff});
+const shooter = new THREE.Mesh(shooterGeometry, shooterMaterial);
+shooter.position.set(0,1,10);
+scene.add(shooter);
+
+const goalieGeometry = new THREE.BoxGeometry(1.5,2,1);
+const goalieMaterial = new THREE.MeshPhongMaterial({color:0xff0000});
+const goalie = new THREE.Mesh(goalieGeometry, goalieMaterial);
+goalie.position.set(0,1,-11);
+scene.add(goalie);
+
+// Shooter names
+const shooters = ["Shayek","Siyam","Sahariya","Tawhid","Samiul"];
+let currentShooter = 0;
+document.getElementById("shooterName").innerText = shooters[currentShooter];
+
+// Score dots
+let scoreDots = document.querySelectorAll(".dot");
+let currentDot = 0;
+
+// Shoot ball
+function shootBall() {
+  const targetX = (Math.random() - 0.5) * 6; // random left/right
+  const targetZ = -13; // goal line
+  const goalWidth = 8;
+
+  let interval = setInterval(()=>{
+    ball.position.z -= 0.5;
+    ball.position.x += (targetX - ball.position.x)/5;
+
+    // Check collision with goalie
+    if(ball.position.z <= goalie.position.z + 0.5 && ball.position.z >= goalie.position.z - 0.5){
+      if(Math.abs(ball.position.x - goalie.position.x) < 1){ // saved
+        scoreDots[currentDot].style.background = "red";
+        nextShooter();
+        clearInterval(interval);
+      }
+    }
+
+    // Goal
+    if(ball.position.z <= targetZ){
+      scoreDots[currentDot].style.background = "black";
+      nextShooter();
+      clearInterval(interval);
+    }
+  },30);
+}
+
+// Next shooter
+function nextShooter(){
+  currentShooter++;
+  currentDot++;
+  if(currentShooter >= shooters.length) currentShooter = 0;
+  if(currentDot >= scoreDots.length) currentDot = 0;
+  document.getElementById("shooterName").innerText = shooters[currentShooter];
+  ball.position.set(0,0.5,10);
+}
+
+// Animate
+function animate(){
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+}
+animate();
+
+// Shoot ball every click (later can add swipe)
+window.addEventListener("click", shootBall);
+
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Penalty Shootout Game</title>
 <style>
   body { text-align: center; font-family: Arial, sans-serif; background-color: #2c3e50; color: white; }
