@@ -312,5 +312,192 @@ footer{margin-top:28px;padding:24px 0;color:var(--muted)}
   <h2>🎮 Fun Zone</h2>
   <a href="penalty.html">Play Penalty Shootout Game</a>
 </section>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DLS Tournament - Bangladesh</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://upload.wikimedia.org/wikipedia/en/6/6e/Dream_League_Soccer_logo.png') no-repeat center top fixed;
+      background-size: 200px;
+      background-color: #0b3d0b;
+      margin: 0;
+      padding: 0;
+      color: white;
+      text-align: center;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+    }
+    h1, h2 {
+      margin: 10px 0;
+    }
+    form {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      margin: 20px auto;
+      width: 300px;
+      border-radius: 10px;
+    }
+    form input, form button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    form button {
+      background: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+    footer {
+      margin: 20px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.7);
+    }
+    /* 🎮 Penalty Game Styles */
+    #penalty-game {
+      margin: 30px auto;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      width: 650px;
+      max-width: 95%;
+    }
+    canvas {
+      background: green;
+      border: 3px solid white;
+      display: block;
+      margin: 10px auto;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⚽ Bangladesh Wide DLS Tournament ⚽</h1>
+    <p>Organizer: <b>Samiul Shayek</b> | Contact: samiulshayek@gmail.com</p>
+  </header>
+
+  <section>
+    <h2>📌 Register Now</h2>
+    <form action="mailto:samiulshayek@gmail.com" method="post" enctype="text/plain">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="number" name="rating" placeholder="Team Rating (1-100)" required>
+      <button type="submit">Register</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>🏆 Tournament Details</h2>
+    <p>Fixture will be announced soon.</p>
+    <p>Entry is <b>FREE</b> and Prize is a <b>Surprise!</b></p>
+  </section>
+
+  <!-- 🎮 Penalty Game Section -->
+  <section id="penalty-game">
+    <h2>🎮 Penalty Shootout Game</h2>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <br>
+    <button onclick="startGame()">Start Game</button>
+    <p id="status"></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Bangladesh DLS Tournament | Email: samiulshayek@gmail.com</p>
+  </footer>
+
+  <script>
+    // 🎮 Simple Penalty Shootout Game
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let ball, goalie, gameRunning = false, score = 0, shots = 0;
+    const players = ["SHAYEK", "HANI", "SIYAM", "TAWHID", "LUPA", "MIM", "SAHARIYA"];
+    let currentPlayer = 0;
+
+    function startGame() {
+      score = 0;
+      shots = 0;
+      currentPlayer = 0;
+      gameRunning = true;
+      document.getElementById("status").innerText = players[currentPlayer] + "'s turn!";
+      resetPositions();
+      draw();
+    }
+
+    function resetPositions() {
+      ball = { x: 300, y: 350, r: 10 };
+      goalie = { x: 260, y: 50, w: 80, h: 20 };
+    }
+
+    function draw() {
+      if (!gameRunning) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Goal Area
+      ctx.fillStyle = "white";
+      ctx.fillRect(200, 30, 200, 20);
+
+      // Goalie
+      ctx.fillStyle = "red";
+      ctx.fillRect(goalie.x, goalie.y, goalie.w, goalie.h);
+
+      // Ball
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+      ctx.fillStyle = "white";
+      ctx.fill();
+
+      requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener("click", () => {
+      if (!gameRunning) return;
+
+      // Kick the ball
+      let shotX = Math.random() * 200 + 200;
+      let shotY = 30;
+
+      // Random goalie move
+      goalie.x = Math.random() * 200 + 200 - goalie.w / 2;
+
+      // Check goal
+      if (shotX > goalie.x && shotX < goalie.x + goalie.w) {
+        document.getElementById("status").innerText = players[currentPlayer] + " MISSED 😢";
+      } else {
+        score++;
+        document.getElementById("status").innerText = players[currentPlayer] + " SCORED 🎉";
+      }
+
+      shots++;
+      currentPlayer++;
+
+      if (currentPlayer >= players.length) {
+        gameRunning = false;
+        document.getElementById("status").innerText = "Game Over! Final Score: " + score + "/" + shots;
+      } else {
+        setTimeout(() => {
+          document.getElementById("status").innerText = players[currentPlayer] + "'s turn!";
+          resetPositions();
+        }, 1000);
+      }
+    });
+  </script>
+</body>
+</html>
   </script></body>
 </html>
