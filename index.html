@@ -1,4 +1,117 @@
-<!DOCTYPE html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penalty Shootout Game</title>
+<style>
+  body { text-align: center; font-family: Arial, sans-serif; background-color: #2c3e50; color: white; }
+  canvas { background-color: #27ae60; display: block; margin: 20px auto; border: 2px solid #fff; }
+  button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  #score { font-size: 20px; margin: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Penalty Shootout Game</h1>
+<div id="score">Score: 0</div>
+<canvas id="gameCanvas" width="400" height="600"></canvas>
+<br>
+<button onclick="shootBall()">Shoot!</button>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let score = 0;
+let ballX = canvas.width / 2;
+let ballY = 500;
+let ballRadius = 10;
+
+// Goalkeeper
+let keeperWidth = 80;
+let keeperHeight = 20;
+let keeperX = canvas.width / 2 - keeperWidth / 2;
+let keeperY = 100;
+
+// Draw goal
+function drawGoal() {
+  ctx.fillStyle = "white";
+  ctx.fillRect(100, 80, 200, 20); // goal top
+  ctx.fillRect(100, 80, 10, 100); // left
+  ctx.fillRect(290, 80, 10, 100); // right
+}
+
+// Draw goalkeeper
+function drawKeeper() {
+  ctx.fillStyle = "red";
+  ctx.fillRect(keeperX, keeperY, keeperWidth, keeperHeight);
+}
+
+// Draw ball
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ballX, ballY, ballRadius, 0, Math.PI*2);
+  ctx.fillStyle = "white";
+  ctx.fill();
+  ctx.closePath();
+}
+
+// Clear canvas and draw everything
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawGoal();
+  drawKeeper();
+  drawBall();
+}
+
+// Shoot the ball
+function shootBall() {
+  // Move ball up
+  let interval = setInterval(() => {
+    ballY -= 10;
+    draw();
+
+    // Check collision with goalkeeper
+    if (ballY <= keeperY + keeperHeight && ballY >= keeperY) {
+      if (ballX >= keeperX && ballX <= keeperX + keeperWidth) {
+        alert("Saved by the keeper!");
+        resetBall();
+        clearInterval(interval);
+      }
+    }
+
+    // Goal
+    if (ballY <= keeperY) {
+      alert("Goal!");
+      score++;
+      document.getElementById("score").innerText = "Score: " + score;
+      resetBall();
+      clearInterval(interval);
+    }
+  }, 30);
+}
+
+// Reset ball to starting position
+function resetBall() {
+  ballX = canvas.width / 2;
+  ballY = 500;
+}
+
+// Move goalkeeper randomly
+function moveKeeper() {
+  keeperX = Math.random() * (canvas.width - keeperWidth);
+  draw();
+}
+
+// Move keeper every 1 second
+setInterval(moveKeeper, 1000);
+
+draw();
+</script>
+
+</body>
+</html><!DOCTYPE html
 </html># Dls-web
 A web maked for dls tournament 
 README.md<!DOCTYPE html><html lang="en">
