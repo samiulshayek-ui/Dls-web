@@ -1,31 +1,5 @@
-DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Football Web</title>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-    }
-    a {
-      display: inline-block;
-      margin-top: 50px;
-      padding: 15px 30px;
-      background: green;
-      color: white;
-      font-size: 20px;
-      text-decoration: none;
-      border-radius: 10px;
-    }
-  </style>
-</head>
-<body>
-  <h1>⚽ Welcome to Football Web</h1>
-  <a href="game.html">Play Penalty Shootout</a>
-</body>
-</html><!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -34,116 +8,176 @@ DOCTYPE html>
   <style>
     body {
       margin: 0;
-      background: url('https://i.ibb.co/L53ssYp/football-bg.jpg') no-repeat center center/cover;
-      height: 100vh;
+      padding: 0;
+      background: linear-gradient(#2e8b57, #145214);
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
+      align-items: center;
       font-family: Arial, sans-serif;
       color: white;
+      height: 100vh;
+      overflow: hidden;
     }
-    canvas {
-      background: transparent;
-      width: 95vw;
-      height: 60vh;
-      border: 3px solid white;
-      border-radius: 10px;
+
+    h2 {
+      margin: 10px 0;
     }
-    #info {
-      margin-top: 15px;
-      font-size: 18px;
-    }
-    .dots {
-      margin-top: 10px;
+
+    /* Score dots */
+    #score {
+      display: flex;
+      justify-content: center;
+      margin: 5px;
     }
     .dot {
-      display: inline-block;
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: gray;
-      margin: 0 5px;
+      margin: 0 4px;
     }
+
+    /* Shooter text */
     #shooter {
+      font-size: 18px;
+      margin: 8px;
+    }
+
+    /* Game field */
+    #game {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      height: 70%;
+      background: #0b3d02;
+      border: 3px solid white;
+      overflow: hidden;
+    }
+
+    /* Goal area */
+    #goal {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      background: rgba(0,0,0,0.6);
-      padding: 5px 10px;
+      top: 0;
+      left: 50%;
+      width: 90%;
+      height: 25%;
+      background: #ccc;
+      transform: translateX(-50%);
+      border: 3px solid white;
+      border-bottom: none;
+    }
+
+    /* Keeper */
+    #keeper {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      width: 70px;
+      height: 40px;
+      background: blue;
+      transform: translateX(-50%);
+      transition: left 0.3s ease;
       border-radius: 5px;
+    }
+
+    /* Ball */
+    #ball {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      width: 35px;
+      height: 35px;
+      background: white;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      touch-action: none;
     }
   </style>
 </head>
 <body>
+  <h2>⚽ Penalty Shootout</h2>
+  <div id="score">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
   <div id="shooter">Shooter: Shayek</div>
-  <canvas id="gameCanvas"></canvas>
-  <div id="info">Tap on goal to shoot ⚽</div>
-  <div class="dots">
-    <span class="dot" id="dot1"></span>
-    <span class="dot" id="dot2"></span>
-    <span class="dot" id="dot3"></span>
-    <span class="dot" id="dot4"></span>
-    <span class="dot" id="dot5"></span>
+
+  <div id="game">
+    <div id="goal"></div>
+    <div id="keeper"></div>
+    <div id="ball"></div>
   </div>
 
   <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
+    const ball = document.getElementById("ball");
+    const keeper = document.getElementById("keeper");
+    const dots = document.querySelectorAll(".dot");
+    const shooters = ["Shayek","Hani","Siyam","Tawhid","Lupa","Mim","Sahariya"];
+    let currentShooter = 0;
+    let scoreIndex = 0;
+    let startX, startY, endX, endY;
 
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    let shots = 0;
-    let shooterNames = ["Shayek", "Siyam", "Sahariya", "Tawhid", "Samiul"];
-    let shooterIndex = 0;
-
-    function drawGoal() {
-      ctx.fillStyle = "white";
-      ctx.fillRect(canvas.width/4, 20, canvas.width/2, 10); // goal bar
-    }
-
-    function drawGoalkeeper() {
-      ctx.fillStyle = "green";
-      ctx.fillRect(canvas.width/2 - 25, 50, 50, 50); // simple square keeper
-    }
-
-    function shootBall(x) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawGoal();
-      let keeperSave = Math.random() > 0.5 ? "left" : "right";
-
-      // If shot direction is near keeper, it's a save
-      let result;
-      if ((x < canvas.width/2 && keeperSave === "left") || 
-          (x > canvas.width/2 && keeperSave === "right")) {
-        result = "miss";
-      } else {
-        result = "goal";
-      }
-
-      shots++;
-      let dot = document.getElementById("dot" + shots);
-      dot.style.background = result === "goal" ? "black" : "red";
-
-      if (shots >= 5) {
-        shooterIndex = (shooterIndex + 1) % shooterNames.length;
-        document.getElementById("shooter").innerText = "Shooter: " + shooterNames[shooterIndex];
-        shots = 0;
-        for (let i=1; i<=5; i++) document.getElementById("dot"+i).style.background = "gray";
-      }
-    }
-
-    canvas.addEventListener("click", (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      shootBall(x);
+    // Start swipe
+    ball.addEventListener("touchstart", e => {
+      const touch = e.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
     });
 
-    drawGoal();
-    drawGoalkeeper();
+    // End swipe
+    ball.addEventListener("touchend", e => {
+      const touch = e.changedTouches[0];
+      endX = touch.clientX;
+      endY = touch.clientY;
+
+      shootBall(endX - startX, endY - startY);
+    });
+
+    function shootBall(dx, dy) {
+      if (scoreIndex >= 5) return;
+
+      // Keeper random move
+      const positions = ["20%", "50%", "80%"];
+      const keeperPos = positions[Math.floor(Math.random() * positions.length)];
+      keeper.style.left = keeperPos;
+
+      // Ball animation
+      let targetX = 50 + dx / 7; // swipe direction
+      let targetY = 70; // go up
+      ball.style.transition = "all 0.6s ease-out";
+      ball.style.bottom = targetY + "%";
+      ball.style.left = targetX + "%";
+
+      setTimeout(() => {
+        checkGoal(parseInt(keeper.style.left), targetX);
+        resetBall();
+      }, 700);
+    }
+
+    function checkGoal(keeperPos, ballPos) {
+      let keeperRange = [keeperPos - 8, keeperPos + 8];
+      if (ballPos >= keeperRange[0] && ballPos <= keeperRange[1]) {
+        dots[scoreIndex].style.background = "red"; // Miss
+      } else {
+        dots[scoreIndex].style.background = "black"; // Goal
+      }
+      scoreIndex++;
+
+      // Change shooter
+      currentShooter = (currentShooter + 1) % shooters.length;
+      document.getElementById("shooter").innerText = "Shooter: " + shooters[currentShooter];
+    }
+
+    function resetBall() {
+      setTimeout(() => {
+        ball.style.transition = "none";
+        ball.style.bottom = "20px";
+        ball.style.left = "50%";
+      }, 100);
+    }
   </script>
 </body>
 </html>
