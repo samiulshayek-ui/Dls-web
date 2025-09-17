@@ -1,263 +1,629 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Web</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #121212;
-      color: #fff;
+    /* ---------- Your original design (kept) ---------- */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    :root{
+      --primary-color:#6a11cb;
+      --secondary-color:#2575fc;
+      --background-light:#f4f7f6;
+      --text-dark:#333;
+      --text-light:#fff;
+      --shadow-color:rgba(0,0,0,0.1);
     }
-    .page {
-      display: none;
-      padding: 20px;
+    *{box-sizing:border-box}
+    body{
+      font-family: 'Poppins', sans-serif;
+      margin:0; padding:0;
+      background: linear-gradient(45deg,var(--primary-color),var(--secondary-color));
+      color:var(--text-dark);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:2rem;
     }
-    .active {
-      display: block;
+
+    /* container used by login/home/content */
+    .card {
+      background:var(--background-light);
+      padding:2.2rem;
+      border-radius:20px;
+      box-shadow:0 10px 30px var(--shadow-color);
+      width:100%;
+      max-width:900px;
+      margin:0 auto;
+      text-align:left;
     }
-    h1, h2 {
-      text-align: center;
+
+    /* navbar (shown inside the app) */
+    .navbar{
+      display:flex;
+      gap:.6rem;
+      margin-bottom:1rem;
+      flex-wrap:wrap;
     }
-    input, button {
-      display: block;
-      margin: 10px auto;
-      padding: 10px;
-      font-size: 16px;
+    .nav-btn{
+      display:inline-block;
+      padding:.5rem .9rem;
+      border-radius:12px;
+      text-decoration:none;
+      background:var(--text-light);
+      color:var(--primary-color);
+      font-weight:600;
+      box-shadow:0 4px 10px var(--shadow-color);
     }
-    .nav {
-      margin: 20px 0;
-      text-align: center;
+    .nav-btn:active{transform:translateY(1px)}
+
+    /* general headers */
+    h1{font-size:1.6rem;color:var(--primary-color);margin:0 0 1rem 0}
+    .sub {color:var(--secondary-color); font-weight:600; margin-bottom:.6rem}
+
+    /* login form */
+    .login-center{display:flex;flex-direction:column;gap:1rem;align-items:center}
+    input[type="text"]{
+      padding:.8rem 1rem;
+      border:2px solid var(--primary-color);
+      border-radius:50px;
+      width:100%;
+      max-width:380px;
+      font-size:1rem;
+      transition:all .3s ease;
     }
-    .nav button {
-      margin: 5px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      background: #333;
-      color: #fff;
-      cursor: pointer;
+    input[type="text"]:focus{outline:none;border-color:var(--secondary-color); box-shadow:0 0 10px var(--secondary-color)}
+    button.primary{
+      padding:.8rem 2rem;border:none;border-radius:50px;
+      background:linear-gradient(90deg,var(--primary-color),var(--secondary-color));
+      color:var(--text-light);font-size:1rem;font-weight:600;cursor:pointer;
+      transition:transform .2s ease,box-shadow .2s ease;
     }
-    .nav button:hover {
-      background: #555;
+    button.primary:hover{transform:translateY(-3px);box-shadow:0 8px 15px rgba(0,0,0,.2)}
+
+    /* category links */
+    .category-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+    .category-card{
+      padding:1rem;background:var(--text-light);border-radius:12px;text-decoration:none;color:var(--primary-color);
+      font-weight:700; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 6px 18px var(--shadow-color);
     }
-    .content-box {
-      max-width: 700px;
-      margin: auto;
-      padding: 20px;
-      background: #1e1e1e;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
-      line-height: 1.6;
+    .category-card.small{font-weight:600;font-size:.95rem}
+
+    /* content pages */
+    .content{
+      margin-top:.5rem;
+    }
+    .content img{max-width:100%;border-radius:10px;box-shadow:0 6px 18px var(--shadow-color)}
+    .text-block{
+      background:var(--text-light);padding:1rem;border-radius:10px;box-shadow:0 4px 12px var(--shadow-color);margin-bottom:1rem;
+    }
+    .back-small{display:inline-block;margin-top:.6rem;text-decoration:none;color:var(--text-light);background:var(--primary-color);padding:.4rem .8rem;border-radius:40px;font-weight:700}
+
+    /* footer small */
+    .small{font-size:.9rem;color:#555;margin-top:.6rem}
+    /* hide all "pages" by default, show active */
+    .page{display:none}
+    .page.active{display:block}
+
+    /* pagination nav inside pages */
+    .page-nav{display:flex;gap:.5rem;align-items:center;margin-top:1rem;flex-wrap:wrap}
+    .page-nav a{padding:.45rem .7rem;border-radius:8px;background:var(--text-light);text-decoration:none;color:var(--primary-color);font-weight:600;box-shadow:0 4px 10px var(--shadow-color)}
+
+    /* responsiveness */
+    @media(max-width:520px){
+      h1{font-size:1.3rem}
+      .card{padding:1rem}
     }
   </style>
 </head>
 <body>
+  <div class="card" id="appContainer">
 
-  <!-- Login Page -->
-  <div id="loginPage" class="page active">
-    <h1>Login</h1>
-    <input type="text" id="username" placeholder="Enter Your Name">
-    <button onclick="goTo('categoriesPage')">Login</button>
-  </div>
+    <!-- LOGIN PAGE -->
+    <section id="page-login" class="page active">
+      <h1 class="fade-in">Enter Your Name</h1>
+      <div class="login-center">
+        <form id="nameForm" onsubmit="return handleLogin(event)">
+          <input type="text" id="userName" placeholder="Your Name" required>
+          <div style="height:6px"></div>
+          <button class="primary" type="submit">Go</button>
+        </form>
+      </div>
+      <p class="small">This app keeps everything in one file – no separate .html files required.</p>
+    </section>
 
-  <!-- Categories Page -->
-  <div id="categoriesPage" class="page">
-    <h1>Categories</h1>
-    <div class="nav">
-      <button onclick="goTo('picturesPage')">Pictures</button>
-      <button onclick="goTo('poetryPage')">Poetry</button>
-      <button onclick="goTo('studyPage')">Study</button>
-      <button onclick="goTo('cyberPage')">Cyber</button>
-      <button onclick="goTo('compositionPage')">Compositions</button>
-    </div>
-  </div>
+    <!-- HOME / CATEGORIES -->
+    <section id="page-home" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-home')">🏠 Home</a>
+        <a href="#" class="nav-btn" onclick="logout()">🔁 Logout</a>
+      </div>
+      <h1 id="welcomeMessage">Welcome!</h1>
+      <p class="sub">Choose a category</p>
+      <div class="category-links">
+        <a href="#" class="category-card" onclick="openCategory('nature')">1. Pictures of Nature</a>
+        <a href="#" class="category-card" onclick="openCategory('poetry')">2. Poetry (Bangla & English)</a>
+        <a href="#" class="category-card" onclick="openCategory('study')">3. Study (Letters, Compositions, Essays)</a>
+        <a href="#" class="category-card" onclick="openCategory('cyber')">4. Cyber Alerts</a>
+        <a href="https://gemini.google.com" target="_blank" class="category-card small">5. Direct Link to Gemini</a>
+      </div>
+      <p class="small">Tip: Use Back / Next inside pages or the Home button to navigate.</p>
+    </section>
 
-  <!-- Pictures Page -->
-  <div id="picturesPage" class="page">
-    <h1>Pictures</h1>
-    <div class="nav">
-      <button onclick="goTo('pic1')">Picture 1</button>
-      <button onclick="goTo('pic2')">Picture 2</button>
-      <button onclick="goTo('categoriesPage')">Back</button>
-    </div>
-  </div>
-  <div id="pic1" class="page">
-    <h2>Picture 1</h2>
-    <div class="content-box">
-      <img src="https://via.placeholder.com/500" alt="pic1">
-    </div>
-    <div class="nav"><button onclick="goTo('picturesPage')">Back</button></div>
-  </div>
-  <div id="pic2" class="page">
-    <h2>Picture 2</h2>
-    <div class="content-box">
-      <img src="https://via.placeholder.com/500/333" alt="pic2">
-    </div>
-    <div class="nav"><button onclick="goTo('picturesPage')">Back</button></div>
-  </div>
+    <!-- NATURE CATEGORY - LIST -->
+    <section id="page-nature-list" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-home')">🏠 Home</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Pictures of Nature</h1>
+      <p class="sub">Pick a picture (each picture is its own page)</p>
+      <div class="category-links">
+        <a href="#" class="category-card" onclick="showPage('page-nature-1')">Nature 1 — Mountain Landscape</a>
+        <a href="#" class="category-card" onclick="showPage('page-nature-2')">Nature 2 — Forest</a>
+        <a href="#" class="category-card" onclick="showPage('page-nature-3')">Nature 3 — Sea / Beach</a>
+      </div>
+    </section>
 
-  <!-- Poetry Page -->
-  <div id="poetryPage" class="page">
-    <h1>Poetry</h1>
-    <div class="nav">
-      <button onclick="goTo('banglaPoem')">Bangla Poem</button>
-      <button onclick="goTo('englishPoem')">English Poem</button>
-      <button onclick="goTo('categoriesPage')">Back</button>
-    </div>
-  </div>
+    <!-- POETRY CATEGORY - LIST -->
+    <section id="page-poetry-list" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-home')">🏠 Home</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Poetry</h1>
+      <p class="sub">Each poet / poem has its own page</p>
+      <div class="category-links">
+        <a href="#" class="category-card" onclick="showPage('page-poem-shakespeare')">William Shakespeare — Sonnet 18 (Full)</a>
+        <a href="#" class="category-card" onclick="showPage('page-poem-frost')">Robert Frost — Stopping by Woods on a Snowy Evening (Full)</a>
+        <a href="#" class="category-card" onclick="showPage('page-poem-nazrul')">Kazi Nazrul Islam — Excerpt & Notes</a>
+        <a href="#" class="category-card" onclick="showPage('page-poem-tagore')">Rabindranath Tagore — Excerpt & Notes</a>
+      </div>
+    </section>
 
-  <!-- Bangla Poem -->
-  <div id="banglaPoem" class="page">
-    <h2>বাংলা কবিতা</h2>
-    <div class="content-box">
-      <p><b>আমার সোনার বাংলা</b><br>
-      আমার সোনার বাংলা, আমি তোমায় ভালোবাসি।<br>
-      চিরদিন তোমার আকাশ, তোমার বাতাস,<br>
-      আমার প্রাণে বাজায় বাঁশি।<br><br>
-      ও মা, ফাগুনে তোর আমের বনে,<br>
-      ঘ্রাণে পাগল করে, মোরে...<br>
-      ও মা, অঘ্রাণে তোর ভরা ক্ষেতে,<br>
-      আমি কী দেখেছি মধুর হাসি।<br><br>
-      আমার সোনার বাংলা, আমি তোমায় ভালোবাসি।</p>
-    </div>
-    <div class="nav"><button onclick="goTo('poetryPage')">Back</button></div>
-  </div>
+    <!-- STUDY CATEGORY - LIST -->
+    <section id="page-study-list" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-home')">🏠 Home</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Study</h1>
+      <p class="sub">Letters, Composition, Essay — each has own page</p>
+      <div class="category-links">
+        <a href="#" class="category-card" onclick="showPage('page-letter-1')">Letter — Invite Friend to Village (Full)</a>
+        <a href="#" class="category-card" onclick="showPage('page-composition-1')">Composition — A Village Fair (Full)</a>
+        <a href="#" class="category-card" onclick="showPage('page-essay-education')">Essay — Importance of Education (Full)</a>
+      </div>
+    </section>
 
-  <!-- English Poem -->
-  <div id="englishPoem" class="page">
-    <h2>English Poem</h2>
-    <div class="content-box">
-      <p><b>The Road Not Taken</b> – Robert Frost<br><br>
-      Two roads diverged in a yellow wood,<br>
-      And sorry I could not travel both<br>
-      And be one traveler, long I stood<br>
-      And looked down one as far as I could<br>
-      To where it bent in the undergrowth.<br><br>
-      I shall be telling this with a sigh<br>
-      Somewhere ages and ages hence:<br>
-      Two roads diverged in a wood, and I—<br>
-      I took the one less traveled by,<br>
-      And that has made all the difference.</p>
-    </div>
-    <div class="nav"><button onclick="goTo('poetryPage')">Back</button></div>
-  </div>
+    <!-- CYBER CATEGORY -->
+    <section id="page-cyber-list" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-home')">🏠 Home</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Cyber Alerts</h1>
+      <div class="content">
+        <div class="text-block">
+          <h3>English</h3>
+          <ol>
+            <li>Use strong, unique passwords. Prefer a passphrase & a password manager.</li>
+            <li>Enable two-factor authentication where possible.</li>
+            <li>Beware of phishing emails: never click links from unknown senders.</li>
+            <li>Keep your OS and apps updated. Install security updates quickly.</li>
+            <li>Don't share OTPs, passwords, or personal info over chat.</li>
+            <li>Use official app stores, avoid sideloading unknown APKs.</li>
+            <li>Use a reputable antivirus on older Android systems and scan occasionally.</li>
+          </ol>
+        </div>
+        <div class="text-block">
+          <h3>বাংলা (Bangla)</h3>
+          <ol>
+            <li>শক্ত পাসওয়ার্ড ব্যবহার করুন। সম্ভব হলে পাসফ্রেজ এবং পাসওয়ার্ড ম্যানেজার ব্যবহার করুন।</li>
+            <li>২-ফ্যাক্টর অথেন্টিকেশন চালু করুন।</li>
+            <li>অজানা ঠিকানা থেকে আসা ইমেল/লিংক-এ ক্লিক করবেন না।</li>
+            <li>অপারেটিং সিস্টেম ও অ্যাপ আপডেট রাখুন।</li>
+            <li>OTP বা পাসওয়ার্ড কাউকে দিবেন না।</li>
+            <li>অফিশিয়াল স্টোর থেকে অ্যাপ ডাউনলোড করুন।</li>
+          </ol>
+        </div>
+      </div>
+    </section>
 
-  <!-- Study Page -->
-  <div id="studyPage" class="page">
-    <h1>Study</h1>
-    <div class="nav">
-      <button onclick="goTo('letterPage')">Letter</button>
-      <button onclick="goTo('applicationPage')">Application</button>
-      <button onclick="goTo('compositionStudy')">Composition</button>
-      <button onclick="goTo('categoriesPage')">Back</button>
-    </div>
-  </div>
-  <div id="letterPage" class="page">
-    <h2>Letter Example</h2>
-    <div class="content-box">
-      <p>Dear Friend,<br><br>
-      I hope you are doing well. I am writing this letter to share my recent experiences with you. 
-      Last week, I visited my village and enjoyed the fresh air and natural beauty...<br><br>
-      Yours lovingly,<br>Rahim</p>
-    </div>
-    <div class="nav"><button onclick="goTo('studyPage')">Back</button></div>
-  </div>
-  <div id="applicationPage" class="page">
-    <h2>Application Example</h2>
-    <div class="content-box">
-      <p>To<br>The Headmaster<br>XYZ School<br><br>
-      Subject: Application for leave<br><br>
-      Sir,<br>I respectfully request leave for two days due to illness. Kindly allow me leave on 20th and 21st August.<br><br>
-      Yours faithfully,<br>Rahim</p>
-    </div>
-    <div class="nav"><button onclick="goTo('studyPage')">Back</button></div>
-  </div>
-  <div id="compositionStudy" class="page">
-    <h2>Composition Example</h2>
-    <div class="content-box">
-      <p><b>Science in Everyday Life</b><br><br>
-      Science has made our life easy and comfortable. From morning to night we use things invented by science. 
-      Electricity, mobile phone, internet, medicine, transport – all are blessings of science. 
-      Without science, modern life is impossible.</p>
-    </div>
-    <div class="nav"><button onclick="goTo('studyPage')">Back</button></div>
-  </div>
+    <!-- ****************** NATURE - pages ****************** -->
+    <section id="page-nature-1" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-nature-list')">🏠 Nature</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Nature — Mountain Landscape</h1>
+      <div class="content">
+        <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1000&q=80" alt="Mountain Landscape">
+        <p class="small">Beautiful mountain valley — click Back to return.</p>
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-nature-2')">Next → Forest</a>
+          <a href="#" onclick="showPage('page-home')">Return Home</a>
+        </div>
+      </div>
+    </section>
 
-  <!-- Cyber Page -->
-  <div id="cyberPage" class="page">
-    <h1>Cyber Alerts</h1>
-    <div class="nav">
-      <button onclick="goTo('alert1')">Alert 1</button>
-      <button onclick="goTo('categoriesPage')">Back</button>
-    </div>
-  </div>
-  <div id="alert1" class="page">
-    <h2>Cyber Alert</h2>
-    <div class="content-box">
-      <p>⚠️ Beware of fake emails, links and unknown calls. Do not share passwords or OTP codes. 
-      Always use strong passwords and two-factor authentication.</p>
-    </div>
-    <div class="nav"><button onclick="goTo('cyberPage')">Back</button></div>
-  </div>
+    <section id="page-nature-2" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-nature-list')">🏠 Nature</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Nature — Forest</h1>
+      <div class="content">
+        <img src="https://images.unsplash.com/photo-1493244040629-496f6d136cc3?w=1000&q=80" alt="Forest">
+        <p class="small">Deep forest scene — click Back to return.</p>
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-nature-1')">← Mountain</a>
+          <a href="#" onclick="showPage('page-nature-3')">Next → Beach</a>
+        </div>
+      </div>
+    </section>
 
-  <!-- Compositions Page -->
-  <div id="compositionPage" class="page">
-    <h1>Compositions</h1>
-    <div class="nav">
-      <button onclick="goTo('comp1')">My Country</button>
-      <button onclick="goTo('comp2')">Village Life</button>
-      <button onclick="goTo('comp3')">City Life</button>
-      <button onclick="goTo('comp4')">Student Life</button>
-      <button onclick="goTo('comp5')">A Journey by Train</button>
-      <button onclick="goTo('categoriesPage')">Back</button>
-    </div>
-  </div>
-  <div id="comp1" class="page">
-    <h2>My Country</h2>
-    <div class="content-box">
-      <p>Bangladesh is a small but beautiful country in South Asia. It is full of rivers, green fields, and natural beauty. 
-      People here are simple and hardworking. Our culture is rich and we are proud of our independence.</p>
-    </div>
-    <div class="nav"><button onclick="goTo('compositionPage')">Back</button></div>
-  </div>
-  <div id="comp2" class="page">
-    <h2>Village Life</h2>
-    <div class="content-box">
-      <p>Village life is simple and peaceful. People live close to nature. They work in the fields, grow crops and live happily with less facilities but more unity and peace of mind.</p>
-    </div>
-    <div class="nav"><button onclick="goTo('compositionPage')">Back</button></div>
-  </div>
-  <div id="comp3" class="page">
-    <h2>City Life</h2>
-    <div class="content-box">
-      <p>City life is modern and fast. People get many opportunities like education, hospital, job and entertainment. But it is also noisy, crowded and sometimes stressful compared to village life.</p>
-    </div>
-    <div class="nav"><button onclick="goTo('compositionPage')">Back</button></div>
-  </div>
-  <div id="comp4" class="page">
-    <h2>Student Life</h2>
-    <div class="content-box">
-      <p>Student life is the best time of life. It is the time to study, learn discipline, and prepare for the future. A good student uses time properly and respects teachers and parents.</p>
-    </div>
-    <div class="nav"><button onclick="goTo('compositionPage')">Back</button></div>
-  </div>
-  <div id="comp5" class="page">
-    <h2>A Journey by Train</h2>
-    <div class="content-box">
-      <p>Last month I had a journey by train from Dhaka to Chattogram. The train passed through green fields, rivers, and villages. 
-      It was very enjoyable to see the natural beauty of Bangladesh from the window.</p>
-    </div>
-    <div class="nav"><button onclick="goTo('compositionPage')">Back</button></div>
+    <section id="page-nature-3" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-nature-list')">🏠 Nature</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Nature — Beach</h1>
+      <div class="content">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1000&q=80" alt="Beach">
+        <p class="small">Calm sea view — click Back to return.</p>
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-nature-2')">← Forest</a>
+          <a href="#" onclick="showPage('page-home')">Return Home</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ****************** POETRY - pages ****************** -->
+    <section id="page-poem-shakespeare" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-poetry-list')">🏠 Poetry</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>William Shakespeare — Sonnet 18 (Full)</h1>
+      <div class="content">
+        <div class="text-block">
+          <p>
+            Shall I compare thee to a summer's day?<br>
+            Thou art more lovely and more temperate:<br>
+            Rough winds do shake the darling buds of May,<br>
+            And summer's lease hath all too short a date:<br><br>
+
+            Sometime too hot the eye of heaven shines,<br>
+            And often is his gold complexion dimmed;<br>
+            And every fair from fair sometime declines,<br>
+            By chance or nature's changing course untrimmed;<br><br>
+
+            But thy eternal summer shall not fade,<br>
+            Nor lose possession of that fair thou ow'st;<br>
+            Nor shall Death brag thou wander'st in his shade,<br>
+            When in eternal lines to time thou grow'st:<br><br>
+
+            So long as men can breathe or eyes can see,<br>
+            So long lives this, and this gives life to thee.
+          </p>
+        </div>
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-poem-frost')">Next → Frost</a>
+          <a href="#" onclick="showPage('page-poetry-list')">Return to list</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-poem-frost" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-poetry-list')">🏠 Poetry</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Robert Frost — Stopping by Woods on a Snowy Evening (Full)</h1>
+      <div class="content">
+        <div class="text-block">
+          <p>
+            Whose woods these are I think I know.<br>
+            His house is in the village though;<br>
+            He will not see me stopping here<br>
+            To watch his woods fill up with snow.<br><br>
+
+            My little horse must think it queer<br>
+            To stop without a farmhouse near<br>
+            Between the woods and frozen lake<br>
+            The darkest evening of the year.<br><br>
+
+            He gives his harness bells a shake<br>
+            To ask if there is some mistake.<br>
+            The only other sound's the sweep<br>
+            Of easy wind and downy flake.<br><br>
+
+            The woods are lovely, dark and deep,<br>
+            But I have promises to keep,<br>
+            And miles to go before I sleep,<br>
+            And miles to go before I sleep.
+          </p>
+        </div>
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-poem-shakespeare')">← Shakespeare</a>
+          <a href="#" onclick="showPage('page-poetry-list')">Return to list</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-poem-nazrul" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-poetry-list')">🏠 Poetry</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Kazi Nazrul Islam — Excerpt & Notes</h1>
+      <div class="content">
+        <div class="text-block">
+          <h3>Short excerpt (Bangla)</h3>
+          <p>বল বীর, বল উন্নত মম শির!</p>
+          <h3>About</h3>
+          <p>
+            Kazi Nazrul Islam is the rebel poet of Bengal. Many of his poems are fiery, patriotic, and revolutionary.
+            Some of Nazrul's major long works may still be under copyright in some countries, so here you'll find short excerpts
+            and an original Nazrul-style short poem (below) written in the spirit of his rhythm and energy.
+          </p>
+        </div>
+
+        <div class="text-block">
+          <h3>Original short poem (in Nazrul spirit) — written for this file</h3>
+          <p>
+            অগ্নিপাথে রণ-গর্জন, বলি উঠি আমি—<br>
+            বীরের ধূলি, বীরের সুর, গগনে বাজে তুমিও রে।<br>
+            উচু হোক শির, বলি হে বীর, রাখো না মনকে দিগন্তে বেঁধে—<br>
+            জীবনের গান গাও, সূর্যে ওঠো নতুন ভোরে!
+          </p>
+        </div>
+
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-poem-tagore')">Next → Tagore</a>
+          <a href="#" onclick="showPage('page-poetry-list')">Return to list</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-poem-tagore" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-poetry-list')">🏠 Poetry</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Rabindranath Tagore — Excerpt & Notes</h1>
+      <div class="content">
+        <div class="text-block">
+          <h3>Short excerpt (Bangla)</h3>
+          <p>আজি এ প্রভাতে রবির কর কেমনে পশিল প্রাণে-র পর...</p>
+          <h3>About</h3>
+          <p>
+            Rabindranath Tagore wrote many poems, songs, plays, and stories that shaped Bengali literature and music.
+            Some of Tagore's works are public domain, others may still have restrictions depending on edition and translation.
+            To respect copyright rules, this entry includes a short excerpt and a brief summary.
+          </p>
+        </div>
+
+        <div class="text-block">
+          <h3>Short Tagore-style original stanza (written for this file)</h3>
+          <p>
+            সূর্য উঠলে দিনের আলো, হৃদয় জাগে সুরে—<br>
+            নদী বলে গল্প পুরোনো, কোকিল হাসে ভোরে।<br>
+            হাতে ধরি নতুন আশা, পথ দেখি দূর-দূর।
+          </p>
+        </div>
+
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-poem-nazrul')">← Nazrul</a>
+          <a href="#" onclick="showPage('page-poetry-list')">Return to list</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ****************** STUDY - pages ****************** -->
+    <section id="page-letter-1" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-study-list')">🏠 Study</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Letter — Invite a Friend to Visit Your Village</h1>
+      <div class="content">
+        <div class="text-block">
+          <p>
+            12 September 2025<br>
+            Dhaka, Bangladesh<br><br>
+            My dear friend,<br><br>
+            I hope you are in good health and spirits. I am writing this letter to invite you to my village during the upcoming school holidays.
+            The village is a peaceful place where life moves slowly and kindly. The mornings are filled with birdsong and the evenings glow with the
+            gentle light of village lamps. We will go boating on the river, stroll through green paddy fields, and taste fresh mangoes and jackfruits.
+            You will meet my family and the neighbors; they are humble and hospitable. I have planned a small cultural program at the community field
+            where you can watch local songs and a puppet show.<br><br>
+
+            Please let me know when you can come. I will arrange travel and welcome you with open arms.<br><br>
+
+            Yours sincerely,<br>
+            Sakin
+          </p>
+        </div>
+
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-composition-1')">Next → Composition</a>
+          <a href="#" onclick="showPage('page-study-list')">Return to list</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-composition-1" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-study-list')">🏠 Study</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Composition — A Village Fair (Full)</h1>
+      <div class="content">
+        <div class="text-block">
+          <p>
+            A village fair is a traditional event that brings life and color to rural communities. Usually held seasonally,
+            the fair becomes a center for trade, entertainment, and socializing. Colorful stalls are set up selling toys,
+            sweets, pottery, and handcrafted items. Food stalls offer local dishes such as pithas, fried snacks, and seasonal fruits.
+            Children laugh on the merry-go-round, puppeteers perform stories passed down for generations, and folk singers fill the air
+            with songs.<br><br>
+
+            The fair also has a social role. Villagers from nearby areas come together, fostering friendship and helping small businesses
+            earn a living. Religious and cultural performances often accompany the fair, and local artisans display their skills.
+            In short, a village fair is not only a source of enjoyment but also a mirror of rural life and culture — lively, communal,
+            and full of tradition.
+          </p>
+        </div>
+
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-letter-1')">← Letter</a>
+          <a href="#" onclick="showPage('page-essay-education')">Next → Essay</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-essay-education" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-study-list')">🏠 Study</a>
+        <a href="#" class="nav-btn" onclick="goBack()">⬅ Back</a>
+      </div>
+      <h1>Essay — Importance of Education (Full)</h1>
+      <div class="content">
+        <div class="text-block">
+          <p>
+            Education is the foundation of human progress and the greatest tool for individual and social transformation.
+            It provides knowledge, builds character, and helps develop critical thinking. An educated society is better equipped
+            to tackle challenges such as poverty, disease, and social injustice. Education empowers people to make informed decisions,
+            find jobs, and contribute meaningfully to their communities.<br><br>
+
+            Schools and teachers play an essential role; however, education is not limited to classroom learning. It includes
+            practical skills, moral instruction, and lifelong learning through books, experience, and the community. Governments and
+            societies need to ensure that education is accessible and affordable to all, because only with widespread education can
+            a nation achieve sustainable growth and equal opportunities for its citizens.
+          </p>
+        </div>
+
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-composition-1')">← Composition</a>
+          <a href="#" onclick="showPage('page-study-list')">Return to list</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- footer small note -->
+    <section id="page-footer-note" class="page">
+      <div class="navbar">
+        <a href="#" class="nav-btn" onclick="showPage('page-home')">🏠 Home</a>
+      </div>
+      <h1>Note</h1>
+      <div class="content">
+        <div class="text-block">
+          <p>
+            Some classic Bangla poems may be copyrighted; so you will find short excerpts, summaries, and original poems
+            in the same spirit. If you have specific full texts you own and want inserted, paste them here and I'll add them.
+          </p>
+        </div>
+        <div class="page-nav">
+          <a href="#" onclick="showPage('page-home')">Return Home</a>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <script>
-    function goTo(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-    }
-  </script>
+    /* ---------- App behavior (single-file navigation) ---------- */
 
-</body>
-  </html>
+    // keep a simple history stack for "goBack" behavior inside single file
+    const pageStack = [];
+
+    function showPage(pageId, pushHistory=true){
+      // hide all pages
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      // show requested
+      const page = document.getElementById(pageId);
+      if(!page) return;
+      page.classList.add('active');
+      if(pushHistory){
+        pageStack.push(pageId);
+      }
+      // special-case welcome message on home
+      if(pageId === 'page-home'){
+        const name = localStorage.getItem('userName') || '';
+        document.getElementById('welcomeMessage').textContent = name ? `Welcome, ${name}!` : 'Welcome!';
+      }
+      // scroll top
+      window.scrollTo(0,0);
+    }
+
+    function goBack(){
+      // pop current
+      if(pageStack.length>1){
+        pageStack.pop(); // remove current
+        const prev = pageStack.pop(); // retrieve previous (to be re-shown)
+        if(prev) showPage(prev, true);
+        else showPage('page-home', true);
+      } else {
+        showPage('page-home', true);
+      }
+    }
+
+    function openCategory(cat){
+      if(cat === 'nature') showPage('page-nature-list');
+      else if(cat === 'poetry') showPage('page-poetry-list');
+      else if(cat === 'study') showPage('page-study-list');
+      else if(cat === 'cyber') showPage('page-cyber-list');
+    }
+
+    function handleLogin(e){
+      e.preventDefault();
+      const input = document.getElementById('userName');
+      const name = input.value.trim();
+      if(!name) return false;
+      localStorage.setItem('userName', name);
+      // go to home
+      showPage('page-home');
+      return false;
+    }
+
+    function logout(){
+      localStorage.removeItem('userName');
+      // clear history and go to login
+      pageStack.length = 0;
+      showPage('page-login');
+    }
+
+    // when the file loads, initialize: if username exists skip login
+    (function init(){
+      const existing = localStorage.getItem('userName');
+      // clear stack then show either home or login
+      pageStack.length = 0;
+      if(existing){
+        showPage('page-home');
+      } else {
+        showPage('page-login');
+      }
+      // record stack initial
+      pageStack.push(document.querySelector('.page.active')?.id || 'page-login');
+    })();
+
+    // add simple keyboard back: Esc -> go home, Backspace -> goBack
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') showPage('page-home');
+      if(e.key === 'Backspace') {
+        // don't prevent when user typing
+        const tag = document.activeElement.tagName.toLowerCase();
+        if(tag !== 'input' && tag !== 'textarea') {
+          e.preventDefault();
+          goBack();
+        }
+      }
+    });
+  </script>
+</body/>
+</html>
