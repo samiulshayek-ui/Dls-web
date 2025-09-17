@@ -2,217 +2,298 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Cool Login & Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All-in-One Website</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    :root {
+      --primary-color: #6a11cb;
+      --secondary-color: #2575fc;
+      --background-light: #f4f7f6;
+      --text-dark: #333;
+      --text-light: #fff;
+      --shadow-color: rgba(0, 0, 0, 0.1);
     }
-    .login, .hub {
-      display: none;
-      height: 100vh;
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
       text-align: center;
     }
-    .login.active, .hub.active {
-      display: flex;
+
+    .page {
+      display: none;
+      width: 100%;
+      height: 100%;
     }
-    input {
-      padding: 10px;
-      margin: 10px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
+
+    .active {
+      display: block;
     }
-    button {
-      padding: 12px 24px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 10px;
-      background: #00adb5;
-      color: #fff;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #06d6a0;
-    }
-    .category {
-      background: #1a1a1a;
-      margin: 15px;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+
+    .login-container, .categories-container, .content-container {
+      background: var(--background-light);
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      width: 90%;
       max-width: 800px;
+      box-sizing: border-box;
+      margin: 20px auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+
+    #nameForm {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    #userName {
+      padding: 0.8rem 1rem;
+      border: 2px solid var(--primary-color);
+      border-radius: 50px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    #userName:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 10px var(--secondary-color);
+    }
+
+    button {
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      color: var(--text-light);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .category-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .category-links a {
+      display: block;
+      padding: 1rem;
+      background-color: var(--text-light);
+      border-radius: 10px;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 10px var(--shadow-color);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .category-links a:hover {
+      transform: translateY(-3px);
+      background-color: var(--background-light);
+    }
+
+    .image-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .image-gallery img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px var(--shadow-color);
+    }
+
+    .text-block, .poetry-section {
+      background: var(--text-light);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 5px var(--shadow-color);
       text-align: left;
     }
-    h2 {
-      color: #06d6a0;
+
+    .text-block h3, .poetry-section h3 {
+      margin-top: 0;
+      color: var(--secondary-color);
     }
-    img {
-      max-width: 100%;
-      border-radius: 12px;
-      margin: 10px 0;
-    }
-    a {
-      color: #00adb5;
+
+    .back-link {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      background: var(--primary-color);
+      color: var(--text-light);
       text-decoration: none;
-      font-weight: bold;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .back-link:hover {
+      background-color: var(--secondary-color);
     }
   </style>
 </head>
 <body>
 
-<!-- Login Page -->
-<div class="login active" id="loginPage">
-  <h1 style="font-size:40px;font-weight:bold;">Login Page</h1>
-  <input type="text" id="name" placeholder="Enter Your Name">
-  <button onclick="goToHub()">Login</button>
-</div>
-
-<!-- Hub Page -->
-<div class="hub" id="hubPage">
-  <h1 style="font-size:38px;">Welcome Hub</h1>
-
-  <!-- Category 1 Picture -->
-  <div class="category">
-    <h2>1. Picture</h2>
-    <p>Beautiful nature from internet (Unsplash):</p>
-    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Nature Picture">
+  <!-- LOGIN PAGE -->
+  <div class="page active" id="loginPage">
+    <div class="login-container">
+      <h1>Enter Your Name</h1>
+      <form id="nameForm">
+        <input type="text" id="userName" placeholder="Your Name" required>
+        <button type="submit">Go</button>
+      </form>
+    </div>
   </div>
 
-  <!-- Category 2 Poetry -->
-  <div class="category">
-    <h2>2. Poetry</h2>
-    <h3>Bangla Poem – বসন্তের আভাস</h3>
-    <p>
-      বসন্ত আসে ফুলের ডাকে,<br>
-      পাখির গানে ভোরের বুকে,<br>
-      সবুজ পাতায় রঙের খেলা,<br>
-      মন ছুঁয়ে যায় আলো মেলা।<br><br>
-      হাওয়ায় মেশে স্মৃতির ছোঁয়া,<br>
-      শীতের শেষে প্রাণের জোয়া,<br>
-      বসন্ত বয়ে আনে আশা,<br>
-      জীবনে ভরে নতুন ভাষা।
-    </p>
-
-    <h3>English Poem – Whispers of Dawn</h3>
-    <p>
-      The night retreats, the stars grow dim,<br>
-      A gentle light begins to brim,<br>
-      The dawn whispers a hopeful song,<br>
-      A place where dreams and hearts belong.<br><br>
-      Through silver mist the world is new,<br>
-      A promise bright, a sky of blue,<br>
-      With every ray the dark has gone,<br>
-      We rise to greet the shining dawn.
-    </p>
+  <!-- CATEGORIES PAGE -->
+  <div class="page" id="homePage">
+    <div class="categories-container">
+      <h1 id="welcomeMessage"></h1>
+      <div class="category-links">
+        <a href="#" onclick="showPage('naturePage')">1. Pictures of Nature</a>
+        <a href="#" onclick="showPage('studyPage')">2. Study</a>
+        <a href="#" onclick="showPage('poetryPage')">3. Poetry</a>
+        <a href="#" onclick="showPage('cyberPage')">4. Cyber Alerts</a>
+        <a href="https://gemini.google.com" target="_blank">5. Gemini</a>
+      </div>
+    </div>
   </div>
 
-  <!-- Category 3 Study -->
-  <div class="category">
-    <h2>3. Study (10 Compositions & Paragraphs)</h2>
-    <h4>1. My School</h4>
-    <p>My school is one of the best places in my life. It is a place where I gain knowledge, learn discipline and build my future. The teachers are friendly and caring. There is a library, a playground and a computer lab. I enjoy reading books and playing with friends. My school inspires me to become a good citizen. I feel proud of my school.</p>
-
-    <h4>2. A Rainy Day</h4>
-    <p>A rainy day is a day of joy and sorrow. The sky remains covered with clouds. Rain falls continuously. Roads become muddy and waterlogged. People use umbrellas and raincoats. Students sometimes enjoy holidays. Farmers become happy because rain helps crops grow. Children make paper boats and play. Though it creates trouble, rain is a blessing for nature.</p>
-
-    <h4>3. My Best Friend</h4>
-    <p>Everyone needs a true friend. My best friend is honest, kind and helpful. He always supports me in my studies and games. We share our secrets and help each other in difficulties. A good friend is like a treasure in life. I feel lucky to have a best friend who encourages me to do good things and avoid bad habits.</p>
-
-    <h4>4. Importance of Reading</h4>
-    <p>Reading books is a great habit. It increases our knowledge, improves our language and develops our mind. Books give us information about science, history, literature and culture. Reading makes us wise and thoughtful. It also entertains us and removes stress. Students should read storybooks, newspapers and educational books regularly. Reading helps to build a bright future.</p>
-
-    <h4>5. Save the Environment</h4>
-    <p>The environment is our home. It gives us air, water and food. But pollution is destroying it day by day. Cutting trees, using plastic and smoke from factories are harmful. We must plant trees, recycle waste and use clean energy. If we protect nature, it will protect us. Saving the environment is saving our own lives.</p>
-
-    <h4>6. My Hobby</h4>
-    <p>Hobby means something we do for pleasure in our free time. My hobby is gardening. I have a small garden in front of my house. I plant flowers and vegetables. I water them daily. Watching flowers bloom makes me happy. Hobby refreshes our mind and makes life enjoyable. Gardening also teaches me patience and love for nature.</p>
-
-    <h4>7. Computer: Friend or Foe</h4>
-    <p>Computer is a great invention of modern science. It helps us in study, business, medical science and communication. But using it too much can harm our health. Some people misuse it for crimes. We should use computers wisely. If used properly, it is our best friend. If misused, it can be our worst enemy.</p>
-
-    <h4>8. A Visit to the Zoo</h4>
-    <p>Last week I visited the zoo with my parents. I saw many animals like lions, tigers, deer, elephants and monkeys. Birds of different colors were flying in cages. The zoo was full of visitors. I learned about the habits of animals. Visiting the zoo is both enjoyable and educational. I wish to visit again.</p>
-
-    <h4>9. Festivals of Bangladesh</h4>
-    <p>Bangladesh is a land of festivals. We celebrate Pahela Baishakh, Eid, Durga Puja and Independence Day. People wear new clothes, prepare delicious foods and visit relatives. Festivals bring joy and unity among people. They also reflect our culture and tradition. Festivals make our life colorful and meaningful.</p>
-
-    <h4>10. How to Study Effectively</h4>
-    <p>Studying effectively is important for success. We should make a timetable and follow it. Concentration is necessary. Reading with understanding is better than memorizing. Writing practice helps us remember. We should ask teachers questions when in doubt. Proper sleep and good health also help in study. If we study regularly and smartly, success will come.</p>
+  <!-- NATURE PAGE -->
+  <div class="page" id="naturePage">
+    <div class="content-container">
+      <h1>Pictures of Nature</h1>
+      <div class="image-gallery">
+        <img src="https://via.placeholder.com/600x400?text=Nature+1" alt="Nature Picture 1">
+        <img src="https://via.placeholder.com/600x400?text=Nature+2" alt="Nature Picture 2">
+        <img src="https://via.placeholder.com/600x400?text=Nature+3" alt="Nature Picture 3">
+      </div>
+      <span class="back-link" onclick="showPage('homePage')">← Back to Categories</span>
+    </div>
   </div>
 
-  <!-- Category 4 Cyber -->
-  <div class="category">
-    <h2>4. Cyber Safety Alert (20 Lines)</h2>
-    <h4>বাংলা</h4>
-    <p>
-      ১. সবসময় শক্তিশালী পাসওয়ার্ড ব্যবহার করুন।<br>
-      ২. দুই ধাপ যাচাই (2FA) চালু রাখুন।<br>
-      ৩. অচেনা লিঙ্কে ক্লিক করবেন না।<br>
-      ৪. ফ্রি Wi-Fi ব্যবহারে সতর্ক থাকুন।<br>
-      ৫. আপনার ব্যক্তিগত তথ্য কাউকে দেবেন না।<br>
-      ৬. সন্দেহজনক ইমেইল খুলবেন না।<br>
-      ৭. এন্টিভাইরাস ব্যবহার করুন।<br>
-      ৮. সফটওয়্যার নিয়মিত আপডেট করুন।<br>
-      ৯. অচেনা কলার বা মেসেজে প্রতিক্রিয়া দিবেন না।<br>
-      ১০. অনলাইনে অপরিচিতের সাথে ছবি শেয়ার করবেন না।<br>
-      ১১. সামাজিক মাধ্যমে গোপনীয়তা সেটিং ব্যবহার করুন।<br>
-      ১২. শিশুদের ইন্টারনেট ব্যবহারে নজর রাখুন।<br>
-      ১৩. অনলাইন গেমে প্রতারণা হতে পারে।<br>
-      ১৪. ডিজিটাল প্রতারণায় সতর্ক থাকুন।<br>
-      ১৫. ব্যাকআপ রাখতে ভুলবেন না।<br>
-      ১৬. পাবলিক কম্পিউটারে লগ-ইন করলে লগ-আউট করুন।<br>
-      ১৭. মোবাইলে অচেনা অ্যাপ ডাউনলোড করবেন না।<br>
-      ১৮. ব্যাংক তথ্য গোপন রাখুন।<br>
-      ১৯. সন্দেহজনক কিছু দেখলে কর্তৃপক্ষকে জানান।<br>
-      ২০. নিরাপদ থাকুন, সচেতন থাকুন।
-    </p>
-
-    <h4>English</h4>
-    <p>
-      1. Always use a strong password.<br>
-      2. Enable two-factor authentication (2FA).<br>
-      3. Never click unknown links.<br>
-      4. Be careful when using free Wi-Fi.<br>
-      5. Do not share personal info with strangers.<br>
-      6. Avoid opening suspicious emails.<br>
-      7. Use antivirus software.<br>
-      8. Update your software regularly.<br>
-      9. Do not respond to unknown callers or messages.<br>
-      10. Do not share private photos online.<br>
-      11. Use privacy settings on social media.<br>
-      12. Monitor children’s internet use.<br>
-      13. Online games may involve fraud.<br>
-      14. Be aware of digital scams.<br>
-      15. Keep regular backups.<br>
-      16. Logout after using public computers.<br>
-      17. Avoid downloading unknown apps.<br>
-      18. Keep banking info secret.<br>
-      19. Report suspicious activity.<br>
-      20. Stay safe, stay alert.
-    </p>
+  <!-- POETRY PAGE -->
+  <div class="page" id="poetryPage">
+    <div class="content-container">
+      <h1>Poetry</h1>
+      <h2>English Poets</h2>
+      <div class="poetry-section">
+        <h3>1. William Shakespeare</h3>
+        <p>"Shall I compare thee to a summer's day?
+        Thou art more lovely and more temperate..."</p>
+      </div>
+      <div class="poetry-section">
+        <h3>2. Robert Frost</h3>
+        <p>"The woods are lovely, dark and deep,
+        But I have promises to keep..."</p>
+      </div>
+      <h2>Bangla Poets</h2>
+      <div class="poetry-section">
+        <h3>1. Kazi Nazrul Islam</h3>
+        <p>"বল বীর, বল উন্নত মম শির!
+        শির নেহারি আমারি, নতশির ওই শিখর হিমাদ্রীর..."</p>
+      </div>
+      <div class="poetry-section">
+        <h3>2. Rabindranath Tagore</h3>
+        <p>"আজি এ প্রভাতে রবির কর
+        কেমনে পশিল প্রাণের 'পর..."</p>
+      </div>
+      <span class="back-link" onclick="showPage('homePage')">← Back to Categories</span>
+    </div>
   </div>
 
-  <!-- Category 5 ChatGPT -->
-  <div class="category">
-    <h2>5. ChatGPT</h2>
-    <p>Click here to visit ChatGPT: <a href="https://chat.openai.com" target="_blank">Go to ChatGPT</a></p>
+  <!-- CYBER PAGE -->
+  <div class="page" id="cyberPage">
+    <div class="content-container">
+      <h1>Cyber Alerts</h1>
+      <div class="text-block">
+        <h3>English</h3>
+        <p>
+          1. Use strong and unique passwords for all your accounts.<br>
+          2. Be cautious of suspicious emails asking for your personal info.<br>
+        </p>
+      </div>
+      <div class="text-block">
+        <h3>Bangla</h3>
+        <p>
+          ১. আপনার সমস্ত অ্যাকাউন্টের জন্য শক্তিশালী এবং অনন্য পাসওয়ার্ড ব্যবহার করুন।<br>
+          ২. সন্দেহজনক ইমেল সম্পর্কে সতর্ক থাকুন।<br>
+        </p>
+      </div>
+      <span class="back-link" onclick="showPage('homePage')">← Back to Categories</span>
+    </div>
   </div>
-</div>
 
-<script>
-  function goToHub() {
-    document.getElementById('loginPage').classList.remove('active');
-    document.getElementById('hubPage').classList.add('active');
-  }
-</script>
+  <!-- STUDY PAGE -->
+  <div class="page" id="studyPage">
+    <div class="content-container">
+      <h1>Study Section</h1>
+      <div class="text-block">
+        <h3>Letter Writing</h3>
+        <p>Example: Write a letter to your friend about your new school.</p>
+      </div>
+      <div class="text-block">
+        <h3>Application</h3>
+        <p>Example: Write an application to the Headmaster for leave of absence.</p>
+      </div>
+      <div class="text-block">
+        <h3>Composition</h3>
+        <p>Example: A composition on "The Importance of Reading".</p>
+      </div>
+      <span class="back-link" onclick="showPage('homePage')">← Back to Categories</span>
+    </div>
+  </div>
 
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const nameForm = document.getElementById('nameForm');
+      if (nameForm) {
+        nameForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const userName = document.getElementById('userName').value;
+          localStorage.setItem('userName', userName);
+          document.getElementById('welcomeMessage').textContent = `Welcome, ${userName}!`;
+          showPage('homePage');
+        });
+      }
+    });
+  </script>
 </body>
 </html>
