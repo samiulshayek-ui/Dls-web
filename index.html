@@ -1,299 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All-in-One Website</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-    :root {
-      --primary-color: #6a11cb;
-      --secondary-color: #2575fc;
-      --background-light: #f4f7f6;
-      --text-dark: #333;
-      --text-light: #fff;
-      --shadow-color: rgba(0, 0, 0, 0.1);
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-      color: var(--text-dark);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .page {
-      display: none;
-      width: 100%;
-      height: 100%;
-    }
-
-    .active {
-      display: block;
-    }
-
-    .login-container, .categories-container, .content-container {
-      background: var(--background-light);
-      padding: 3rem;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px var(--shadow-color);
-      width: 90%;
-      max-width: 800px;
-      box-sizing: border-box;
-      margin: 20px auto;
-    }
-
-    h1 {
-      font-size: 2rem;
-      color: var(--primary-color);
-      margin-bottom: 1.5rem;
-    }
-
-    #nameForm {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    #userName {
-      padding: 0.8rem 1rem;
-      border: 2px solid var(--primary-color);
-      border-radius: 50px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    #userName:focus {
-      outline: none;
-      border-color: var(--secondary-color);
-      box-shadow: 0 0 10px var(--secondary-color);
-    }
-
-    button {
-      padding: 0.8rem 2rem;
-      border: none;
-      border-radius: 50px;
-      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-      color: var(--text-light);
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .category-links {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-
-    .category-links a {
-      display: block;
-      padding: 1rem;
-      background-color: var(--text-light);
-      border-radius: 10px;
-      color: var(--primary-color);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 10px var(--shadow-color);
-      transition: transform 0.3s ease, background-color 0.3s ease;
-    }
-
-    .category-links a:hover {
-      transform: translateY(-3px);
-      background-color: var(--background-light);
-    }
-
-    .image-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .image-gallery img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px var(--shadow-color);
-    }
-
-    .text-block, .poetry-section {
-      background: var(--text-light);
-      padding: 1.5rem;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 2px 5px var(--shadow-color);
-      text-align: left;
-    }
-
-    .text-block h3, .poetry-section h3 {
-      margin-top: 0;
-      color: var(--secondary-color);
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      border-radius: 50px;
-      background: var(--primary-color);
-      color: var(--text-light);
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-      cursor: pointer;
-    }
-
-    .back-link:hover {
-      background-color: var(--secondary-color);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All-in-One Web</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap">
+<style>
+:root {
+--primary-color: #6a11cb;
+--secondary-color: #2575fc;
+--background-light: #f4f7f6;
+--text-dark: #333;
+--text-light: #fff;
+--shadow-color: rgba(0,0,0,0.1);
+}
+*{margin:0; padding:0; box-sizing:border-box;}
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(45deg,var(--primary-color),var(--secondary-color));
+color:var(--text-dark);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+.container{
+width:100%;
+max-width:900px;
+background:var(--background-light);
+padding:2rem;
+border-radius:20px;
+box-shadow:0 10px 30px var(--shadow-color);
+margin:2rem;
+}
+h1,h2,h3{text-align:center; color:var(--primary-color); margin-bottom:1rem;}
+nav{display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin:1rem 0;}
+nav a{
+padding:0.7rem 1.2rem;
+border-radius:10px;
+background:var(--primary-color);
+color:var(--text-light);
+text-decoration:none;
+font-weight:600;
+transition:0.3s;
+}
+nav a:hover{background:var(--secondary-color);}
+section{display:none;}
+section.active{display:block;}
+img{max-width:100%; border-radius:10px; box-shadow:0 4px 10px var(--shadow-color); margin:1rem auto; display:block;}
+.text-block{background:var(--text-light); padding:1rem; border-radius:10px; margin-bottom:1rem; box-shadow:0 2px 5px var(--shadow-color);}
+.back{display:block; text-align:center; margin-top:1rem; cursor:pointer;}
+.login{text-align:center;}
+.login input{padding:0.7rem; border:2px solid var(--primary-color); border-radius:50px; margin:1rem 0; width:60%;}
+.login button{padding:0.7rem 2rem; border:none; border-radius:50px; background:linear-gradient(90deg,var(--primary-color),var(--secondary-color)); color:#fff; font-weight:600; cursor:pointer;}
+</style>
 </head>
 <body>
+<div class="container">
 
-  <!-- LOGIN PAGE -->
-  <div class="page active" id="loginPage">
-    <div class="login-container">
-      <h1>Enter Your Name</h1>
-      <form id="nameForm">
-        <input type="text" id="userName" placeholder="Your Name" required>
-        <button type="submit">Go</button>
-      </form>
-    </div>
-  </div>
+<!-- Login Page -->
+<section id="login" class="active">
+<div class="login">
+<h1>Enter Your Name</h1>
+<input type="text" id="userName" placeholder="Your Name">
+<button onclick="login()">Go</button>
+</div>
+</section>
 
-  <!-- CATEGORIES PAGE -->
-  <div class="page" id="homePage">
-    <div class="categories-container">
-      <h1 id="welcomeMessage"></h1>
-      <div class="category-links">
-        <a href="#" onclick="showPage('naturePage')">1. Pictures of Nature</a>
-        <a href="#" onclick="showPage('studyPage')">2. Study</a>
-        <a href="#" onclick="showPage('poetryPage')">3. Poetry</a>
-        <a href="#" onclick="showPage('cyberPage')">4. Cyber Alerts</a>
-        <a href="https://gemini.google.com" target="_blank">5. Gemini</a>
-      </div>
-    </div>
-  </div>
+<!-- Categories Page -->
+<section id="home">
+<h1 id="welcomeMessage"></h1>
+<nav>
+<a onclick="show('nature1')">Picture 1</a>
+<a onclick="show('nature2')">Picture 2</a>
+<a onclick="show('nature3')">Picture 3</a>
+<a onclick="show('poem1')">Poetry - Shakespeare</a>
+<a onclick="show('poem2')">Poetry - Frost</a>
+<a onclick="show('poem3')">Poetry - Nazrul</a>
+<a onclick="show('poem4')">Poetry - Tagore</a>
+<a onclick="show('study1')">Letter</a>
+<a onclick="show('study2')">Composition</a>
+<a onclick="show('cyber')">Cyber Alerts</a>
+</nav>
+</section>
 
-  <!-- NATURE PAGE -->
-  <div class="page" id="naturePage">
-    <div class="content-container">
-      <h1>Pictures of Nature</h1>
-      <div class="image-gallery">
-        <img src="https://via.placeholder.com/600x400?text=Nature+1" alt="Nature Picture 1">
-        <img src="https://via.placeholder.com/600x400?text=Nature+2" alt="Nature Picture 2">
-        <img src="https://via.placeholder.com/600x400?text=Nature+3" alt="Nature Picture 3">
-      </div>
-      <span class="back-link" onclick="showPage('homePage')">← Back to Categories</span>
-    </div>
-  </div>
+<!-- Pictures -->
+<section id="nature1"><h1>Nature Picture 1</h1>
+<img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=800" alt="Nature 1">
+<span class="back" onclick="show('home')">← Back</span></section>
 
-  <!-- POETRY PAGE -->
-  <div class="page" id="poetryPage">
-    <div class="content-container">
-      <h1>Poetry</h1>
-      <h2>English Poets</h2>
-      <div class="poetry-section">
-        <h3>1. William Shakespeare</h3>
-        <p>"Shall I compare thee to a summer's day?
-        Thou art more lovely and more temperate..."</p>
-      </div>
-      <div class="poetry-section">
-        <h3>2. Robert Frost</h3>
-        <p>"The woods are lovely, dark and deep,
-        But I have promises to keep..."</p>
-      </div>
-      <h2>Bangla Poets</h2>
-      <div class="poetry-section">
-        <h3>1. Kazi Nazrul Islam</h3>
-        <p>"বল বীর, বল উন্নত মম শির!
-        শির নেহারি আমারি, নতশির ওই শিখর হিমাদ্রীর..."</p>
-      </div>
-      <div class="poetry-section">
-        <h3>2. Rabindranath Tagore</h3>
-        <p>"আজি এ প্রভাতে রবির কর
-        কেমনে পশিল প্রাণের 'পর..."</p>
-      </div>
-      <span class="back-link" onclick="showPage('homePage')">← Back to Categories</span>
-    </div>
-  </div>
+<section id="nature2"><h1>Nature Picture 2</h1>
+<img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800" alt="Nature 2">
+<span class="back" onclick="show('home')">← Back</span></section>
 
-  <!-- CYBER PAGE -->
-  <div class="page" id="cyberPage">
-    <div class="content-container">
-      <h1>Cyber Alerts</h1>
-      <div class="text-block">
-        <h3>English</h3>
-        <p>
-          1. Use strong and unique passwords for all your accounts.<br>
-          2. Be cautious of suspicious emails asking for your personal info.<br>
-        </p>
-      </div>
-      <div class="text-block">
-        <h3>Bangla</h3>
-        <p>
-          ১. আপনার সমস্ত অ্যাকাউন্টের জন্য শক্তিশালী এবং অনন্য পাসওয়ার্ড ব্যবহার করুন।<br>
-          ২. সন্দেহজনক ইমেল সম্পর্কে সতর্ক থাকুন।<br>
-        </p>
-      </div>
-      <span class="back-link" onclick="showPage('homePage')">← Back to Categories</span>
-    </div>
-  </div>
+<section id="nature3"><h1>Nature Picture 3</h1>
+<img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800" alt="Nature 3">
+<span class="back" onclick="show('home')">← Back</span></section>
 
-  <!-- STUDY PAGE -->
-  <div class="page" id="studyPage">
-    <div class="content-container">
-      <h1>Study Section</h1>
-      <div class="text-block">
-        <h3>Letter Writing</h3>
-        <p>Example: Write a letter to your friend about your new school.</p>
-      </div>
-      <div class="text-block">
-        <h3>Application</h3>
-        <p>Example: Write an application to the Headmaster for leave of absence.</p>
-      </div>
-      <div class="text-block">
-        <h3>Composition</h3>
-        <p>Example: A composition on "The Importance of Reading".</p>
-      </div>
-      <span class="back-link" onclick="showPage('homePage')">← Back to Categories</span>
-    </div>
-  </div>
+<!-- Poems Full -->
+<section id="poem1"><h1>William Shakespeare - Sonnet 18</h1>
+<div class="text-block">
+<p>Shall I compare thee to a summer's day?<br>
+Thou art more lovely and more temperate:<br>
+Rough winds do shake the darling buds of May,<br>
+And summer's lease hath all too short a date;<br>
+Sometime too hot the eye of heaven shines,<br>
+And often is his gold complexion dimm'd;<br>
+And every fair from fair sometime declines,<br>
+By chance, or nature's changing course, untrimm'd;<br>
+But thy eternal summer shall not fade,<br>
+Nor lose possession of that fair thou ow’st;<br>
+Nor shall death brag thou wander'st in his shade,<br>
+When in eternal lines to time thou grow'st;<br>
+So long as men can breathe or eyes can see,<br>
+So long lives this, and this gives life to thee.</p>
+</div>
+<span class="back" onclick="show('home')">← Back</span></section>
 
-  <script>
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-    }
+<section id="poem2"><h1>Robert Frost - The Road Not Taken</h1>
+<div class="text-block">
+<p>Two roads diverged in a yellow wood,<br>
+And sorry I could not travel both<br>
+And be one traveler, long I stood<br>
+And looked down one as far as I could<br>
+To where it bent in the undergrowth;<br>
+Then took the other, as just as fair,<br>
+And having perhaps the better claim,<br>
+Because it was grassy and wanted wear;<br>
+Though as for that the passing there<br>
+Had worn them really about the same,<br>
+And both that morning equally lay<br>
+In leaves no step had trodden black.<br>
+Oh, I kept the first for another day!<br>
+Yet knowing how way leads on to way,<br>
+I doubted if I should ever come back.<br>
+I shall be telling this with a sigh<br>
+Somewhere ages and ages hence:<br>
+Two roads diverged in a wood, and I—<br>
+I took the one less traveled by,<br>
+And that has made all the difference.</p>
+</div>
+<span class="back" onclick="show('home')">← Back</span></section>
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const nameForm = document.getElementById('nameForm');
-      if (nameForm) {
-        nameForm.addEventListener('submit', (event) => {
-          event.preventDefault();
-          const userName = document.getElementById('userName').value;
-          localStorage.setItem('userName', userName);
-          document.getElementById('welcomeMessage').textContent = `Welcome, ${userName}!`;
-          showPage('homePage');
-        });
-      }
-    });
-  </script>
+<section id="poem3"><h1>Kazi Nazrul Islam - Bol Bir</h1>
+<div class="text-block">
+<p>বল বীর, বল উন্নত মম শির!<br>
+শির নেহারি আমারি, নতশির ওই শিখর হিমাদ্রীর।<br>
+বল—“আমি মৃত্যুকে ভয় করি না।”<br>
+বল—“আমি বন্দুক হাতে দাঁড়াই।”<br>
+বল—“আমি চির স্বাধীন। আমি বীর।”<br>
+বল—“আমি মানুষের জন্য লড়াই করি।”<br>
+জাগো বীর, জাগো উজ্জ্বল মনুষ্যত্বের জন্য!</p>
+</div>
+<span class="back" onclick="show('home')">← Back</span></section>
+
+<section id="poem4"><h1>Rabindranath Tagore - Where the Mind is Without Fear</h1>
+<div class="text-block">
+<p>Where the mind is without fear and the head is held high;<br>
+Where knowledge is free;<br>
+Where the world has not been broken up into fragments by narrow domestic walls;<br>
+Where words come out from the depth of truth;<br>
+Where tireless striving stretches its arms towards perfection;<br>
+Where the clear stream of reason has not lost its way into the dreary desert sand of dead habit;<br>
+Where the mind is led forward by thee into ever-widening thought and action—<br>
+Into that heaven of freedom, my Father, let my country awake.</p>
+</div>
+<span class="back" onclick="show('home')">← Back</span></section>
+
+<!-- Study -->
+<section id="study1"><h1>Letter - Study Routine</h1>
+<div class="text-block">
+<p>Dear Friend,<br>
+I hope this letter finds you well. I am writing to tell you about my daily study routine. I wake up at 6 AM and start with some exercise. After breakfast, I begin my studies with mathematics and science. I take a short break for lunch and continue with English and Bangla in the afternoon. In the evening, I revise what I learned during the day and finish with some reading. This routine helps me stay organized and improve my learning.<br>
+Yours sincerely,<br>
+[Your Name]</p>
+</div>
+<span class="back" onclick="show('home')">← Back</span></section>
+
+<section id="study2"><h1>Composition - Science in Everyday Life</h1>
+<div class="text-block">
+<p>Science is a blessing in everyday life. We use electricity to power our homes, mobile phones to communicate, vehicles for transport, and medicine to cure diseases. Science has made life easier, faster, and more comfortable. In agriculture, it helps farmers increase crop production. In industries, it improves productivity. Science also provides information through the internet and enables space exploration. Despite challenges, science remains a tool for progress and development, helping humanity achieve comfort, knowledge, and innovation in daily life.</p>
+</div>
+<span class="back" onclick="show('home')">← Back</span></section>
+
+<!-- Cyber -->
+<section id="cyber"><h1>Cyber Alerts</h1>
+<div class="text-block"><h3>English</h3>
+<p>1. Use strong passwords.<br>
+2. Do not share OTP or bank details.<br>
+3. Beware of phishing emails.<br>
+4. Keep software updated.<br>
+5. Do not click unknown links.</p>
+</div>
+<div class="text-block"><h3>বাংলা</h3>
+<p>১. শক্তিশালী পাসওয়ার্ড ব্যবহার করুন।<br>
+২. OTP বা ব্যাংক তথ্য শেয়ার করবেন না।<br>
+৩. সন্দেহজনক ইমেল এড়ান।<br>
+৪. সফটওয়্যার সবসময় আপডেট রাখুন।<br>
+৫. অজানা লিঙ্কে ক্লিক করবেন না।</p>
+</div>
+<span class="back" onclick="show('home')">← Back</span></section>
+
+</div>
+
+<script>
+function login(){
+const name=document.getElementById('userName').value;
+if(name.trim()!==""){
+localStorage.setItem('userName',name);
+document.getElementById('welcomeMessage').innerText="Welcome, "+name+"!";
+show('home');
+}
+}
+function show(id){
+document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
+</script>
 </body>
 </html>
