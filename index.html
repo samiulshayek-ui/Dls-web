@@ -1,119 +1,370 @@
- <!DOCTYPE html>
+ 
+<!doctype html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login Page</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cool Portal — Login</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: url('986145a0-2d74-11eb-9dcd-8b2ef5358591.jpg') no-repeat center center fixed;
-      background-size: cover;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa7b2; --accent:#7dd3fc; --glass: rgba(255,255,255,0.03);
+      --light-bg:#f3f6f9; --light-card:#ffffff; --dark-text:#0b1220;
     }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,'Segoe UI',Roboto; background:linear-gradient(180deg,#071126 0%,#0f1724 60%); color:#e6eef6; min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px}
+    .container{width:100%;max-width:1100px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:16px; overflow:hidden; box-shadow: 0 10px 30px rgba(2,6,23,0.7); display:grid;grid-template-columns:420px 1fr}/* left - login */
+.left{padding:36px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#60a5fa);display:flex;align-items:center;justify-content:center;font-weight:800;color:#04213a}
+.title{font-size:20px;font-weight:800;letter-spacing:0.6px}
+h1{margin:18px 0 8px;font-size:28px}
+p.lead{color:var(--muted);margin:0 0 18px}
 
-    .login-box {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 40px;
-      width: 350px;
-      text-align: center;
-      color: #fff;
-      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
-    }
+label{display:block;font-weight:700;margin-top:12px}
+input[type=text], input[type=email], input[type=date]{width:100%;padding:12px 14px;border-radius:10px;border:none;background:rgba(255,255,255,0.03);color:inherit;margin-top:6px;font-weight:600}
+.actions{display:flex;align-items:center;gap:12px;margin-top:18px}
+.btn{padding:12px 16px;border-radius:10px;border:none;font-weight:800;cursor:pointer}
+.btn-primary{background:linear-gradient(90deg,#22c1c3,#7dd3fc);color:#04213a}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
 
-    .login-box h2 {
-      margin-bottom: 10px;
-      font-size: 26px;
-      font-weight: 600;
-    }
+.muted-small{font-size:13px;color:var(--muted);margin-top:10px}
+.error{color:#ffb4b4;background:rgba(255,180,180,0.06);padding:8px;border-radius:8px;margin-top:10px}
 
-    .login-box p {
-      font-size: 14px;
-      margin-bottom: 20px;
-      opacity: 0.9;
-    }
+.theme-toggle{margin-left:auto;display:flex;align-items:center;gap:8px}
+.theme-toggle input{transform:scale(1.2)}
 
-    .login-box input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 10px;
-      outline: none;
-      font-size: 14px;
-    }
+/* right - dashboard */
+.right{padding:28px;background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1400&auto=format&fit=crop&crop=entropy') center/cover no-repeat}
+.overlay{backdrop-filter: blur(6px);background:linear-gradient(180deg, rgba(2,6,23,0.4), rgba(2,6,23,0.6));height:100%;padding:28px}
+.dash-head{display:flex;align-items:center;gap:12px}
+.user-pill{margin-left:auto;background:rgba(255,255,255,0.04);padding:8px 12px;border-radius:999px;font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:18px}
+.card{background:var(--glass);padding:16px;border-radius:12px;min-height:120px;display:flex;flex-direction:column;gap:8px;justify-content:space-between}
+.card h3{margin:0;font-size:16px}
+.card p{margin:0;color:var(--muted);font-size:13px}
+.full{grid-column:1/-1}
 
-    .login-box button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 10px;
-      background: #0078ff;
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gallery img{width:100%;height:120px;object-fit:cover;border-radius:8px}
 
-    .login-box button:hover {
-      background: #005fcc;
-    }
+/* poems and content lists */
+.tabbar{display:flex;gap:8px;margin-top:12px}
+.tab{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.02);cursor:pointer;font-weight:700}
+.tab.active{background:linear-gradient(90deg,var(--accent),#60a5fa);color:#04213a}
+.content-box{background:rgba(255,255,255,0.02);padding:14px;border-radius:10px;margin-top:10px;max-height:360px;overflow:auto}
+pre.poem{white-space:pre-wrap;font-family:inherit}
 
-    .error {
-      color: #ff4444;
-      margin-top: 10px;
-      font-size: 14px;
-      display: none;
-    }
+footer.small{color:var(--muted);font-size:13px;margin-top:12px;text-align:center}
+
+/* responsive */
+@media (max-width:900px){.container{grid-template-columns:1fr} .right{display:none} body{padding:18px}}
+
+/* light mode support */
+.light body, .light :root{--bg:var(--light-bg); --card:var(--light-card); --muted:#4b5563; --glass: rgba(2,6,23,0.03); color:var(--dark-text)}
+
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>Welcome</h2>
-    <p>Fly as high as you dream.</p>
-    <form onsubmit="return checkLogin(event)">
-      <input type="text" id="name" placeholder="Enter Your Name" required>
-      <input type="date" id="birthdate" required>
-      <button type="submit">Login</button>
-      <div id="error" class="error">Name or Birth Date not correct</div>
-    </form>
+  <div class="container" id="app">
+    <div class="left">
+      <div class="brand">
+        <div class="logo">CP</div>
+        <div>
+          <div class="title">Cool Portal</div>
+          <div class="muted-small">Fast • Minimal • Exam-ready</div>
+        </div>
+        <div class="theme-toggle">
+          <label style="font-weight:700">Light</label>
+          <input type="checkbox" id="themeSwitch" aria-label="theme switch" />
+        </div>
+      </div><h1>Login</h1>
+  <p class="lead">Bold & clear — enter your details. If they match a saved profile you'll be taken to the 5-category hub.</p>
+
+  <div id="errorBox" class="error" style="display:none"></div>
+
+  <label for="name">Name</label>
+  <input id="name" type="text" placeholder="Your name" autocomplete="name" />
+
+  <label for="email">Email</label>
+  <input id="email" type="email" placeholder="you@mail.com" autocomplete="email" />
+
+  <label for="dob">Birth date</label>
+  <input id="dob" type="date" />
+
+  <div class="actions">
+    <button class="btn btn-primary" id="loginBtn">Enter Portal</button>
+    <button class="btn btn-ghost" id="demoBtn">Use Demo</button>
+    <button class="btn btn-ghost" id="createBtn">Save Profile</button>
   </div>
 
-  <script>
-    function checkLogin(event) {
-      event.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      const birthdate = document.getElementById("birthdate").value;
+  <div class="muted-small">Demo credentials: Name <strong>Sakin</strong>, Email <strong>sakin@example.com</strong>, Birthdate <strong>2012-01-01</strong></div>
+  <div class="muted-small">You can save a profile locally with <strong>Save Profile</strong> to test match behaviour.</div>
 
-      // Convert date to dd-mm
-      const dateObj = new Date(birthdate);
-      const day = String(dateObj.getDate()).padStart(2, '0');
-      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const formattedDate = day + "-" + month;
+  <div style="height:16px"></div>
+  <footer class="small">Designed with ❤️ — nature imagery (no humans)</footer>
+</div>
 
-      // Saved data
-      const users = {
-        "Shayek": "06-08",
-        "Siyam": "22-09",
-        "Saleha": "05-09",
-        "Mim": "24-01"
-       "Omat"  : "09-08"
-      };
+<div class="right" id="rightPane">
+  <div class="overlay" id="dashboard" style="display:none">
+    <div class="dash-head">
+      <div>
+        <div style="font-weight:800;font-size:20px">Welcome, <span id="userName">Guest</span></div>
+        <div class="muted-small">Choose a category below</div>
+      </div>
+      <div class="user-pill" id="userEmail">guest@mail</div>
+    </div>
 
-      if (users[name] === formattedDate) {
-        window.location.href = "wish.html"; // ✅ goes to your created file
-      } else {
-        document.getElementById("error").style.display = "block";
+    <div class="cards">
+      <div class="card" id="card-pics">
+        <div>
+          <h3>1 • Pictures</h3>
+          <p>Nature collection (no human subjects).</p>
+        </div>
+        <div><button class="btn btn-ghost" onclick="openTab('pictures')">Open</button></div>
+      </div>
+
+      <div class="card" id="card-poetry">
+        <div>
+          <h3>2 • Poetry</h3>
+          <p>Bangla & English poems — crafted for exams & reading.</p>
+        </div>
+        <div><button class="btn btn-ghost" onclick="openTab('poetry')">Open</button></div>
+      </div>
+
+      <div class="card" id="card-study">
+        <div>
+          <h3>3 • Study</h3>
+          <p>Letter formation, application templates, 10 compositions/paragraphs.</p>
+        </div>
+        <div><button class="btn btn-ghost" onclick="openTab('study')">Open</button></div>
+      </div>
+
+      <div class="card" id="card-cyber">
+        <div>
+          <h3>4 • Cyber</h3>
+          <p>Alert message about cyber crime — 20 lines in Bangla & English.</p>
+        </div>
+        <div><button class="btn btn-ghost" onclick="openTab('cyber')">Open</button></div>
+      </div>
+
+      <div class="card full" id="card-chatgpt">
+        <div>
+          <h3>5 • ChatGPT</h3>
+          <p>Direct link to ChatGPT web interface.</p>
+        </div>
+        <div style="display:flex;gap:10px">
+          <a class="btn btn-primary" href="https://chat.openai.com" target="_blank">Open ChatGPT</a>
+          <button class="btn btn-ghost" onclick="openTab('chat')">Preview</button>
+        </div>
+      </div>
+
+      <div class="card full">
+        <div>
+          <h3>Quick gallery</h3>
+          <p>Tap "Pictures" for the full collection.</p>
+        </div>
+        <div class="gallery" id="miniGallery">
+          <!-- images injected -->
+        </div>
+      </div>
+    </div>
+
+    <div id="contentArea"></div>
+  </div>
+</div>
+
+  </div>  <script>
+    // Data store: demo users (updated) + content arrays
+    const demoUsers = [
+      {name:'Omar', email:'omar@example.com', dob:'2012-01-01'},
+      {name:'Shayek', email:'shayek@example.com', dob:'2012-01-01'},
+      {name:'Siyam', email:'siyam@example.com', dob:'2012-01-01'},
+      {name:'Mim', email:'mim@example.com', dob:'2012-01-01'},
+      {name:'Sahariya', email:'sahariya@example.com', dob:'2012-01-01'},
+      {name:'Lupa', email:'lupa@example.com', dob:'2012-01-01'},
+      {name:'Lija', email:'lija@example.com', dob:'2012-01-01'}
+    ];
+
+    const natureImages = [
+      'https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop&crop=entropy',
+      'https://images.unsplash.com/photo-1501785888048-50f0d830f2fb?q=80&w=1200&auto=format&fit=crop&crop=entropy',
+      'https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1200&auto=format&fit=crop&crop=entropy',
+      'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop&crop=entropy',
+      'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop&crop=entropy',
+      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop&crop=entropy'
+    ];
+
+    const banglaPoem = `বাংলার মুকুলে রোদ ঝরে হেসে
+শিশিরের কথা বলে পাতার কিনারে;
+মাটির গন্ধে মিশে যায় সোনালি দিন
+বীরের গান বাজে নিশে অবশ্যই জানি।`;
+
+    const englishPoem = `In the hush of dawn the river hums,
+light spills like secrets across the fields.
+Leaves remember summer, birds remember spring,
+and every quiet path recalls a friend.`;
+
+    const studyTemplates = {
+      letters: `Dear Sir/Madam,\n\nI am writing to... (formal letter template)`,
+      application: `To,\nThe Principal,\nXYZ School.\n\nSubject: Application for...\n\nRespected Sir/Madam,\n\nI beg to state that...`,
+      compositions: []
+    };
+
+    // generate 10 short exam-ready paragraphs (English)
+    for(let i=1;i<=10;i++){
+      studyTemplates.compositions.push(`Composition ${i}: This is a model paragraph suitable for exam use. It contains clear topic sentence, supporting details and a concluding line so students can adapt it under exam conditions.`);
+    }
+
+    const cyberAlertEnglish = `1. Do not share passwords with anyone.\n2. Use strong, unique passwords for each account.\n3. Enable two-factor authentication wherever possible.\n4. Beware of phishing emails asking for sensitive information.\n5. Do not click unknown links.\n6. Keep your software and antivirus updated.\n7. Use secure Wi‑Fi networks.\n8. Back up important data regularly.\n9. Limit personal information on public profiles.\n10. Log out from shared devices.\n11. Verify sources before downloading files.\n12. Be cautious with public chargers and USBs.\n13. Report cyberbullying immediately.\n14. Monitor bank accounts and statements.\n15. Use privacy settings on social platforms.\n16. Avoid installing apps from unknown sources.\n17. Educate family about online scams.\n18. Use encrypted messaging for sensitive chats.\n19. Review app permissions.\n20. When in doubt, ask a trusted adult or IT support.`;
+
+    const cyberAlertBangla = `১. কারো সাথে পাসওয়ার্ড শেয়ার করবেন না।\n২. প্রতিটি অ্যাকাউন্টে শক্ত পাসওয়ার্ড ব্যবহার করুন।\n৩. যেখানে সম্ভব দুই-স্তরের যাচাইকরণ ব্যবহার করুন।\n৪. ফিশিং ইমেইল থেকে সতর্ক থাকুন।\n৫. অচেনা লিংকে ক্লিক করবেন না।\n৬. সফটওয়্যার এবং অ্যান্টিভাইরাস আপডেট রাখুন।\n৭. নিরাপদ ওয়াই-ফাই ব্যবহার করুন।\n৮. গুরুত্বপূর্ণ ডেটার ব্যাকআপ রাখুন।\n৯. পাবলিক প্রোফাইলে ব্যক্তিগত তথ্য সীমিত রাখুন।\n১০. শেয়ার্ড ডিভাইসে লগআউট করুন।\n১১. ডাউনলোড করার আগে উৎস যাচাই করুন।\n১২. পাবলিক চার্জার ও ইউএসবি ব্যবহার সতর্কতার সাথে করুন।\n১৩. সাইবার-বুলিং হলে রিপোর্ট করুন।\n১৪. ব্যাংক একাউন্ট মনিটর করুন।\n১৫. সোশ্যাল মিডিয়ায় প্রাইভেসি সেটিং ব্যবহার করুন।\n১৬. অচেনা সোর্স থেকে অ্যাপ ইন্সটল করবেন না।\n১৭. পরিবারের সদস্যদের অনলাইন স্ক্যাম সম্পর্কে জানান।\n১৮. সংবেদনশীল চ্যাটে এনক্রিপ্টেড মেসেঞ্জার ব্যবহার করুন।\n১৯. অ্যাপ পারমিশন নিয়মিত পর্যালোচনা করুন।\n২০. সন্দেহ হলে বিশ্বাসযোগ্য একজনের সঙ্গে পরামর্শ করুন।`;
+
+    // DOM refs
+    const loginBtn = document.getElementById('loginBtn');
+    const demoBtn = document.getElementById('demoBtn');
+    const createBtn = document.getElementById('createBtn');
+    const errorBox = document.getElementById('errorBox');
+    const dashboard = document.getElementById('dashboard');
+    const rightPane = document.getElementById('rightPane');
+    const userNameEl = document.getElementById('userName');
+    const userEmailEl = document.getElementById('userEmail');
+    const miniGallery = document.getElementById('miniGallery');
+    const contentArea = document.getElementById('contentArea');
+
+    // fill mini gallery
+    function fillMiniGallery(){
+      miniGallery.innerHTML = '';
+      for(let i=0;i<3;i++){
+        const img = document.createElement('img'); img.src = natureImages[i%natureImages.length]; img.alt='nature';
+        miniGallery.appendChild(img);
       }
     }
+    fillMiniGallery();
+
+    // theme toggle
+    document.getElementById('themeSwitch').addEventListener('change', (e)=>{
+      if(e.target.checked) document.documentElement.style.filter = 'invert(0)';
+      document.body.classList.toggle('light', e.target.checked);
+    });
+
+    function showError(msg){ errorBox.style.display='block'; errorBox.textContent = msg; setTimeout(()=>errorBox.style.display='none',3500) }
+
+    function matchProfile(name,email,dob){
+      const saved = JSON.parse(localStorage.getItem('profiles')||'[]');
+      const all = [...demoUsers, ...saved];
+      return all.find(u=>u.name.toLowerCase()===name.toLowerCase() && u.email.toLowerCase()===email.toLowerCase() && u.dob===dob);
+    }
+
+    loginBtn.addEventListener('click', ()=>{
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const dob = document.getElementById('dob').value;
+      if(!name||!email||!dob) return showError('Please fill all fields.');
+      const matched = matchProfile(name,email,dob);
+      if(!matched) return showError('No matching profile found. Use Demo or Save Profile.');
+      openDashboard(matched);
+    });
+
+    demoBtn.addEventListener('click', ()=>{
+      const d = demoUsers[0]; openDashboard(d);
+    });
+
+    createBtn.addEventListener('click', ()=>{
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const dob = document.getElementById('dob').value;
+      if(!name||!email||!dob) return showError('Fill all fields to save a profile.');
+      const profiles = JSON.parse(localStorage.getItem('profiles')||'[]');
+      profiles.push({name,email,dob}); localStorage.setItem('profiles', JSON.stringify(profiles));
+      showError('Profile saved locally. Now press Enter Portal to match.');
+    });
+
+    function openDashboard(user){
+      document.getElementById('userName').textContent = user.name;
+      document.getElementById('userEmail').textContent = user.email;
+      dashboard.style.display='block';
+      // ensure right pane visible on small screens by navigating
+      document.getElementById('rightPane').scrollIntoView({behavior:'smooth'});
+      renderPictures();
+      openTab('home');
+    }
+
+    function openTab(tab){
+      contentArea.innerHTML = '';
+      if(tab==='pictures'){
+        renderPictures(true);
+      } else if(tab==='poetry'){
+        renderPoetry();
+      } else if(tab==='study'){
+        renderStudy();
+      } else if(tab==='cyber'){
+        renderCyber();
+      } else if(tab==='chat'){
+        contentArea.innerHTML = `<div class="content-box"><h3>ChatGPT</h3><p class=\"muted-small\">Opens https://chat.openai.com in a new tab. Click the blue button on the dashboard to go there directly.</p></div>`;
+      } else {
+        contentArea.innerHTML = `<div class="content-box"><h3>Welcome</h3><p class=\"muted-small\">Pick a category card to open its content. Use the "Open ChatGPT" button for AI chat.</p></div>`;
+      }
+    }
+
+    function renderPictures(full=false){
+      let html = '<div class="content-box">';
+      html += '<h3>Nature Gallery (no humans)</h3><p class="muted-small">High-quality nature images pulled from free image sources.</p>';
+      html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px">';
+      for(const src of natureImages){ html += `<img src="${src}" alt="nature" style="width:100%;height:160px;object-fit:cover;border-radius:8px"/>` }
+      html += '</div></div>';
+      contentArea.innerHTML = html;
+    }
+
+    function renderPoetry(){
+      const html = `
+        <div class="content-box">
+          <div class="tabbar">
+            <div class="tab active" data-tab="bn">বাংলা</div>
+            <div class="tab" data-tab="en">English</div>
+          </div>
+          <div id="poemArea" style="margin-top:12px">
+            <pre class="poem">${banglaPoem}</pre><hr />
+        <h4>Short modern poem (English)</h4>
+        <pre class="poem">${englishPoem}</pre>
+      </div>
+    </div>
+  `;
+  contentArea.innerHTML = html;
+  // tab switching
+  contentArea.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',(e)=>{
+    contentArea.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    e.target.classList.add('active');
+    const tab = e.target.dataset.tab;
+    const area = document.getElementById('poemArea');
+    if(tab==='bn') area.innerHTML = `<pre class="poem">${banglaPoem}</pre>`;
+    else area.innerHTML = `<pre class="poem">${englishPoem}</pre>`;
+  }));
+}
+
+function renderStudy(){
+  let html = `<div class=\"content-box\">`;
+  html += `<h3>Letters & Applications</h3><p class=\"muted-small\">Copy and adapt these templates for exams.</p>`;
+  html += `<pre style=\"background:transparent;border:none;padding:0;white-space:pre-wrap\">${studyTemplates.letters}\n\n${studyTemplates.application}</pre>`;
+  html += `<hr/><h4>10 Compositions / Paragraphs</h4>`;
+  studyTemplates.compositions.forEach((c,i)=>{ html += `<p><strong>${i+1}.</strong> ${c}</p>` });
+  html += `</div>`;
+  contentArea.innerHTML = html;
+}
+
+function renderCyber(){
+  const html = `<div class="content-box"><h3>Cyber Crime Alert (English)</h3><pre style="white-space:pre-wrap">${cyberAlertEnglish}</pre><hr/><h3>সাইবার সতর্কতা (Bangla)</h3><pre style="white-space:pre-wrap">${cyberAlertBangla}</pre></div>`;
+  contentArea.innerHTML = html;
+}
+
+// initial behaviour: show right pane but hidden dashboard until login
+// allow pressing Enter to submit
+document.addEventListener('keydown',(e)=>{ if(e.key==='Enter') loginBtn.click() });
+
+// Preload images
+natureImages.forEach(s=>{ const i=new Image(); i.src=s });
+
   </script>
 </body>
 </html>
