@@ -133,7 +133,28 @@
           <button class="primary" type="submit">Go</button>
         </form>
       </div>
-      <p class="small">This web is maked by Samiul Talukder Shayek enjoy the site and if you have problem tell on shayeka10@gmail.com</p>
+      <p class="small">This web is maked by Samiul Talukder Shayek enjoy the site and if you have problem tell on shayeka10@gmail.<!-- Floating Chatbot Button -->
+<div id="chatButton" 
+     style="position:fixed; bottom:20px; right:20px; background:black; color:white; 
+            padding:15px; border-radius:50%; cursor:pointer; font-size:20px; z-index:9999;">
+  💬
+</div>
+
+<!-- Chatbot Popup -->
+<div id="chatPopup" 
+     style="display:none; position:fixed; bottom:80px; right:20px; width:350px; height:500px; 
+            border-radius:15px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.3); z-index:10000;">
+  <iframe src="shayek-ai.html" style="width:100%; height:100%; border:none;"></iframe>
+</div>
+
+<script>
+  const chatButton = document.getElementById("chatButton");
+  const chatPopup = document.getElementById("chatPopup");
+
+  chatButton.onclick = () => {
+    chatPopup.style.display = chatPopup.style.display === "none" ? "block" : "none";
+  };
+</script></p>
     </section>
 
     <!-- HOME / CATEGORIES -->
