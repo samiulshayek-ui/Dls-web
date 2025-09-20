@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShayekAI Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 350px;
+      height: 500px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #000; /* black instead of blue */
+      color: #fff;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .chat-header .title {
+      display: flex;
+      align-items: center;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background: #fafafa;
+    }
+
+    .bot-message, .user-message {
+      max-width: 75%;
+      padding: 10px 15px;
+      margin: 8px 0;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .bot-message {
+      background: #e4e6eb;
+      color: #000;
+      align-self: flex-start;
+    }
+
+    .user-message {
+      background: #000; /* black */
+      color: #fff;
+      align-self: flex-end;
+    }
+
+    .quick-replies button {
+      background: #000; /* black */
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      margin: 5px 5px 0 0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .chat-footer {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      background: #fff;
+    }
+
+    .chat-footer input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .chat-footer button {
+      background: #000; /* black */
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      margin-left: 5px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .rating {
+      margin-top: 5px;
+    }
+
+    .rating span {
+      cursor: pointer;
+      font-size: 16px;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <!-- HEADER -->
+    <div class="chat-header">
+      <div class="title">
+        <img src="https://i.pravatar.cc/100" alt="Avatar">
+        <div>
+          <strong>Something by Shayek + AI</strong><br>
+          <small>We typically reply in a few minutes</small>
+        </div>
+      </div>
+      <div>⋮</div>
+    </div>
+
+    <!-- BODY -->
+    <div class="chat-body" id="chatBody">
+      <div class="bot-message">Hey 👋 I’m your AI assistant! How can I help?</div>
+      <div class="quick-replies">
+        <button onclick="sendQuick('Shipping rates to EU')">Shipping rates to EU</button>
+        <button onclick="sendQuick('Shipping rates to USA')">Shipping rates to USA</button>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="chat-footer">
+      <input type="text" id="userInput" placeholder="Enter your message...">
+      <button onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBody = document.getElementById("chatBody");
+    const userInput = document.getElementById("userInput");
+
+    function appendMessage(content, sender) {
+      const msg = document.createElement("div");
+      msg.className = sender === "user" ? "user-message" : "bot-message";
+      msg.textContent = content;
+      chatBody.appendChild(msg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (text) {
+        appendMessage(text, "user");
+        userInput.value = "";
+        fetchInternet(text);
+      }
+    }
+
+    function sendQuick(text) {
+      appendMessage(text, "user");
+      fetchInternet(text);
+    }
+
+    // === Internet Search ===
+    async function fetchInternet(query) {
+      appendMessage("🔎 Searching online for: " + query, "bot");
+
+      try {
+        // Example using DuckDuckGo Instant Answer API
+        const res = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`);
+        const data = await res.json();
+
+        if (data.AbstractText) {
+          appendMessage(data.AbstractText, "bot");
+        } else {
+          appendMessage("⚠️ No direct result found, please try another query.", "bot");
+        }
+      } catch (err) {
+        appendMessage("❌ Error fetching from internet.", "bot");
+      }
+    }
+  </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShayekAI Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 350px;
+      height: 500px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #000; /* black instead of blue */
+      color: #fff;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .chat-header .title {
+      display: flex;
+      align-items: center;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background: #fafafa;
+    }
+
+    .bot-message, .user-message {
+      max-width: 75%;
+      padding: 10px 15px;
+      margin: 8px 0;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .bot-message {
+      background: #e4e6eb;
+      color: #000;
+      align-self: flex-start;
+    }
+
+    .user-message {
+      background: #000; /* black */
+      color: #fff;
+      align-self: flex-end;
+    }
+
+    .quick-replies button {
+      background: #000; /* black */
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      margin: 5px 5px 0 0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .chat-footer {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      background: #fff;
+    }
+
+    .chat-footer input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .chat-footer button {
+      background: #000; /* black */
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      margin-left: 5px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .rating {
+      margin-top: 5px;
+    }
+
+    .rating span {
+      cursor: pointer;
+      font-size: 16px;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <!-- HEADER -->
+    <div class="chat-header">
+      <div class="title">
+        <img src="https://i.pravatar.cc/100" alt="Avatar">
+        <div>
+          <strong>Something by Shayek + AI</strong><br>
+          <small>We typically reply in a few minutes</small>
+        </div>
+      </div>
+      <div>⋮</div>
+    </div>
+
+    <!-- BODY -->
+    <div class="chat-body" id="chatBody">
+      <div class="bot-message">Hey 👋 I’m your AI assistant! How can I help?</div>
+      <div class="quick-replies">
+        <button onclick="sendQuick('Shipping rates to EU')">Shipping rates to EU</button>
+        <button onclick="sendQuick('Shipping rates to USA')">Shipping rates to USA</button>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="chat-footer">
+      <input type="text" id="userInput" placeholder="Enter your message...">
+      <button onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBody = document.getElementById("chatBody");
+    const userInput = document.getElementById("userInput");
+
+    function appendMessage(content, sender) {
+      const msg = document.createElement("div");
+      msg.className = sender === "user" ? "user-message" : "bot-message";
+      msg.textContent = content;
+      chatBody.appendChild(msg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (text) {
+        appendMessage(text, "user");
+        userInput.value = "";
+        fetchInternet(text);
+      }
+    }
+
+    function sendQuick(text) {
+      appendMessage(text, "user");
+      fetchInternet(text);
+    }
+
+    // === Internet Search ===
+    async function fetchInternet(query) {
+      appendMessage("🔎 Searching online for: " + query, "bot");
+
+      try {
+        // Example using DuckDuckGo Instant Answer API
+        const res = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`);
+        const data = await res.json();
+
+        if (data.AbstractText) {
+          appendMessage(data.AbstractText, "bot");
+        } else {
+          appendMessage("⚠️ No direct result found, please try another query.", "bot");
+        }
+      } catch (err) {
+        appendMessage("❌ Error fetching from internet.", "bot");
+      }
+    }
+  </script>
+
+</body>
+</html>
